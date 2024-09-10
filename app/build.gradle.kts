@@ -54,7 +54,7 @@ dependencies {
     val nav_version = "2.8.0"
 
     implementation ("androidx.navigation:navigation-compose:$nav_version")
-
+    implementation("androidx.compose.ui:ui-text-google-fonts:1.5.4")
     implementation("androidx.core:core-ktx:1.13.1")
     implementation("androidx.lifecycle:lifecycle-runtime-ktx:2.8.1")
     implementation("androidx.activity:activity-compose:1.9.0")
