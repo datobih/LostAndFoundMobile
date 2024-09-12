@@ -79,6 +79,6 @@ fun OpeningScreen() {
 @Composable
 fun Preview() {
     LostAndFoundTheme {
-      OpeningScreen()
+      CreateAccountScreen()
     }
 }

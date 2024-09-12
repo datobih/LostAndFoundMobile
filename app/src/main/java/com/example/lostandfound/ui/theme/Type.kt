@@ -49,10 +49,18 @@ val headlineText = TextStyle(
     fontSize = 20.sp,
 )
 
+val labelTextStyle = TextStyle(
+fontFamily = Poppins,
+    fontWeight = FontWeight.Normal,
+    color = Color(0x80000000),
+    fontSize = 14.sp,
+
+)
+
 val subText = TextStyle(
     fontFamily = Poppins,
     fontWeight =  FontWeight.Normal,
     color = Color(0xB2000000),
-    fontSize = 14.sp,
+    fontSize = 16.sp,
 )
 
