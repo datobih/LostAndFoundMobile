@@ -46,7 +46,7 @@ val Typography = Typography(
 val headlineText = TextStyle(
     fontFamily = Poppins,
     fontWeight =  FontWeight.Bold,
-    fontSize = 20.sp,
+    fontSize = 25.sp,
 )
 
 val labelTextStyle = TextStyle(
@@ -64,3 +64,8 @@ val subText = TextStyle(
     fontSize = 16.sp,
 )
 
+val tinyText = TextStyle(
+    fontFamily = Poppins,
+    fontWeight =  FontWeight.Bold,
+    fontSize = 25.sp,
+)
