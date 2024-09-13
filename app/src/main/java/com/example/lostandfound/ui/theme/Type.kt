@@ -49,6 +49,13 @@ val headlineText = TextStyle(
     fontSize = 25.sp,
 )
 
+val headlineBigText = TextStyle(
+    fontFamily = Poppins,
+    fontWeight =  FontWeight.Bold,
+    fontSize = 25.sp,
+)
+
+
 val labelTextStyle = TextStyle(
 fontFamily = Poppins,
     fontWeight = FontWeight.Normal,
