@@ -76,3 +76,10 @@ val tinyText = TextStyle(
     fontWeight =  FontWeight.Bold,
     fontSize = 25.sp,
 )
+
+val pinStyle=TextStyle(
+    fontFamily= Poppins,
+    fontWeight=FontWeight.Bold,
+    fontSize = 23.sp,
+    color = Color.Black
+)

@@ -77,7 +77,7 @@ fun CreateAccountScreen() {
             Text(
                 text = "Create account",
                 style = headlineText,
-                modifier = Modifier.fillMaxWidth().padding(start = 20.dp,top = 145.dp, bottom = 62.dp),
+                modifier = Modifier.fillMaxWidth().padding(start = 20.dp,top = 145.dp, bottom = 32.dp),
                 textAlign = TextAlign.Left
 
             )

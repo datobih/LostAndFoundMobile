@@ -25,7 +25,7 @@ import com.example.lostandfound.ui.theme.headlineText
 import com.example.lostandfound.ui.theme.subText
 
 @Composable
-fun OpeningScreen() {
+fun OnboardingScreen() {
     Column(
         modifier = Modifier.fillMaxSize(),
         horizontalAlignment = Alignment.CenterHorizontally
@@ -36,7 +36,7 @@ fun OpeningScreen() {
         Box(
             modifier = Modifier.fillMaxWidth()
                 .height(273.dp)
-                .background(Color.Red)
+                .background(Color.Black)
         )
     }
 
@@ -79,6 +79,6 @@ fun OpeningScreen() {
 @Composable
 fun Preview() {
     LostAndFoundTheme {
-      ForgotPasswordScreen()
+      ForgotPasswordVerificationScreen()
     }
 }
