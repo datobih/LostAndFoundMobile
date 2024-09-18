@@ -29,16 +29,14 @@ object ForgotPasswordScreenRef
 @Serializable
 object ForgotPasswordVerificationScreenRef
 
-@Serializable
-object HomeScreenRef
 
 @Composable
 fun AppNavHost(mainNavController: NavHostController,mainViewModel: MainViewModel) {
 
 
     NavHost(navController = mainNavController, startDestination = HomeScreenRef ){
-        composable<HomeScreenRef>{ Homescreen(mainViewModel,mainNavController) }
-        composable<OnboardingScreenRef> { OnboardingScreen()  }
+        composable<HomeScreenRef>{ HomeNavHost(mainViewModel,mainNavController) }
+        composable<OnboardingScreenRef> { OnboardingScreen(mainNavController)  }
         composable<CreateAccountScreenRef> { CreateAccountScreen()  }
         composable<LoginScreenRef> { LoginScreen() }
         composable<ForgotPasswordScreenRef> { ForgotPasswordScreen() }

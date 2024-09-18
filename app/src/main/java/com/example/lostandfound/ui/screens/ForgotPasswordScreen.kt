@@ -23,13 +23,9 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
-import com.example.lostandfound.ui.AppButton
-import com.example.lostandfound.ui.PasswordOutlineTextField
-import com.example.lostandfound.ui.theme.Poppins
+import com.example.lostandfound.ui.AppButtonBlack
 import com.example.lostandfound.ui.theme.headlineBigText
-import com.example.lostandfound.ui.theme.headlineText
 import com.example.lostandfound.ui.theme.labelTextStyle
-import com.example.lostandfound.ui.theme.subText
 
 @Composable
 fun ForgotPasswordScreen(){
@@ -58,7 +54,7 @@ fun ForgotPasswordScreen(){
             Text(
                 text = "Forgot Password?",
                 style = headlineBigText,
-                modifier = Modifier.fillMaxWidth().padding(start = 20.dp,top = 145.dp),
+                modifier = Modifier.fillMaxWidth().padding(start = 20.dp,top = 70.dp),
                 textAlign = TextAlign.Left,
 
 
@@ -99,7 +95,7 @@ fun ForgotPasswordScreen(){
 
 
 
-            AppButton("Send code",Modifier.fillMaxWidth().padding(top = 45.dp, start = 20.dp, end = 20.dp ).height(56.dp)) { }
+            AppButtonBlack("Send code",Modifier.fillMaxWidth().padding(top = 45.dp, start = 20.dp, end = 20.dp ).height(56.dp)) { }
 
 
 

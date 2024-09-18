@@ -21,12 +21,10 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
-import com.example.lostandfound.ui.AppButton
+import com.example.lostandfound.ui.AppButtonBlack
 import com.example.lostandfound.ui.PasswordOutlineTextField
-import com.example.lostandfound.ui.theme.Poppins
 import com.example.lostandfound.ui.theme.headlineText
 import com.example.lostandfound.ui.theme.labelTextStyle
-import com.example.lostandfound.ui.theme.subText
 
 @Composable
 fun LoginScreen(){
@@ -55,7 +53,7 @@ fun LoginScreen(){
             Text(
                 text = "Sign in",
                 style = headlineText,
-                modifier = Modifier.fillMaxWidth().padding(start = 20.dp,top = 145.dp, bottom = 62.dp),
+                modifier = Modifier.fillMaxWidth().padding(start = 20.dp,top = 70.dp, bottom = 48.dp),
                 textAlign = TextAlign.Left
 
             )
@@ -101,7 +99,7 @@ fun LoginScreen(){
 
 
 
-            AppButton("Sign in",Modifier.fillMaxWidth().padding(top = 71.dp, start = 20.dp, end = 20.dp ).height(56.dp)) { }
+            AppButtonBlack("Sign in",Modifier.fillMaxWidth().padding(top = 42.dp, start = 20.dp, end = 20.dp ).height(56.dp)) { }
 
 
 

@@ -12,27 +12,28 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
-import com.example.lostandfound.Greeting
+import androidx.navigation.NavController
+import androidx.navigation.NavHostController
 import com.example.lostandfound.ui.AppButton
+import com.example.lostandfound.ui.AppButtonBlack
+import com.example.lostandfound.ui.navigation.CreateAccountScreenRef
+import com.example.lostandfound.ui.navigation.LoginScreenRef
 import com.example.lostandfound.ui.theme.LostAndFoundTheme
-import com.example.lostandfound.ui.theme.Poppins
 import com.example.lostandfound.ui.theme.headlineText
 import com.example.lostandfound.ui.theme.subText
 
 @Composable
-fun OnboardingScreen() {
+fun OnboardingScreen(navController: NavHostController) {
     Column(
         modifier = Modifier.fillMaxSize(),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
 
 
-    Box(modifier = Modifier.padding(top = 130.dp,start = 40.dp, end = 40.dp)) {
+    Box(modifier = Modifier.padding(top = 70.dp,start = 40.dp, end = 40.dp)) {
         Box(
             modifier = Modifier.fillMaxWidth()
                 .height(273.dp)
@@ -40,7 +41,7 @@ fun OnboardingScreen() {
         )
     }
 
-        Column(modifier = Modifier.padding(horizontal = 71.dp)) {
+        Column(modifier = Modifier.padding(horizontal = 20.dp)) {
             Text(text = "Welcome to Lost And Found",
                 style = headlineText,
                 modifier = Modifier.padding(top = 67.dp),
@@ -48,7 +49,7 @@ fun OnboardingScreen() {
 
             )
 
-            Text(text = "Your go-to app for finding lost items and returning found ones. Let’s get started!",
+            Text(text = "Your go-to app for finding lost items and returning found ones.\nLet’s get started!",
                 style = subText,
                 modifier = Modifier.padding(top = 11.dp),
                 textAlign = TextAlign.Center
@@ -56,11 +57,20 @@ fun OnboardingScreen() {
             )
 
 
-            AppButton(text = "Sign In",modifier = Modifier.fillMaxWidth().padding(top = 76.dp ).height(56.dp)){}
 
+        }
+        AppButtonBlack(text = "Sign In",modifier = Modifier.fillMaxWidth().padding(top = 76.dp, start = 20.dp, end = 20.dp ).height(56.dp)){
+            navController.navigate(LoginScreenRef){
+                navController.popBackStack()
+            }
 
+        }
 
+        AppButton(text = "Create Account",modifier =  Modifier.fillMaxWidth().padding(top = 14.dp , start = 20.dp, end = 20.dp).height(56.dp)) {
 
+            navController.navigate(CreateAccountScreenRef){
+                navController.popBackStack()
+            }
         }
 
 
@@ -68,7 +78,8 @@ fun OnboardingScreen() {
 
 
 
-}
+
+    }
 
 
 }

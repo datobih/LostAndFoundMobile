@@ -10,15 +10,6 @@ import com.example.lostandfound.viewmodel.MainViewModel
 @Composable
 fun Homescreen(mainViewModel: MainViewModel,parentNavController: NavHostController){
 
-    LaunchedEffect(true) {
-        if(mainViewModel.isFirstTimeUser()){
-            parentNavController.navigate(OnboardingScreenRef){
-                parentNavController.navigateUp()
-            }
-        }
-
-
-    }
 
 
 

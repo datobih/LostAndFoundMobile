@@ -1,7 +1,5 @@
 package com.example.lostandfound.ui.screens
 
-import androidx.compose.foundation.border
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
@@ -16,10 +14,9 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
-import com.example.lostandfound.ui.AppButton
+import com.example.lostandfound.ui.AppButtonBlack
 import com.example.lostandfound.ui.PinField
 import com.example.lostandfound.ui.theme.headlineBigText
-import com.example.lostandfound.ui.theme.headlineText
 import com.example.lostandfound.ui.theme.labelTextStyle
 
 @Composable
@@ -30,7 +27,7 @@ fun ForgotPasswordVerificationScreen(){
         Text(
             text = "Please check your\nemail",
             style = headlineBigText,
-            modifier = Modifier.fillMaxWidth().padding(start = 20.dp,top = 145.dp),
+            modifier = Modifier.fillMaxWidth().padding(start = 20.dp,top = 70.dp),
             textAlign = TextAlign.Left
 
         )
@@ -65,7 +62,7 @@ fun ForgotPasswordVerificationScreen(){
             modifier = Modifier.fillMaxWidth(),
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
-            AppButton("Verify",Modifier.fillMaxWidth().padding(top = 45.dp, start = 20.dp, end = 20.dp ).height(56.dp)) { }
+            AppButtonBlack("Verify",Modifier.fillMaxWidth().padding(top = 45.dp, start = 20.dp, end = 20.dp ).height(56.dp)) { }
 
 
             Row (modifier = Modifier.align(Alignment.CenterHorizontally).padding(top = 38.dp)){
