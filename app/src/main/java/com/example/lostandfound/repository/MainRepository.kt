@@ -16,4 +16,13 @@ class MainRepository @Inject constructor(val sharedPreferences: SharedPreference
         }
     }
 
+    fun setAuthToken(token:String){
+        sharedPreferences.edit(commit = true){
+            putString(Constants.AUTH_TOKEN,token)
+        }
+    }
+
+    fun getAuthToken():String?{
+       return sharedPreferences.getString(Constants.AUTH_TOKEN,null)
+    }
 }

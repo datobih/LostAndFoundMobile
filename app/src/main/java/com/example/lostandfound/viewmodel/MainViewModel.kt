@@ -19,5 +19,12 @@ fun isFirstTimeUser():Boolean{
     }
 
 
+    fun setAuthToken(token:String){
+        mainRepository.setAuthToken(token)
+    }
+
+    fun getAuthToken():String?{
+        return mainRepository.getAuthToken()
+    }
 
 }

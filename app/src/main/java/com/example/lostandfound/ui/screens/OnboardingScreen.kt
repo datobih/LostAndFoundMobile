@@ -9,6 +9,7 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -24,9 +25,10 @@ import com.example.lostandfound.ui.navigation.LoginScreenRef
 import com.example.lostandfound.ui.theme.LostAndFoundTheme
 import com.example.lostandfound.ui.theme.headlineText
 import com.example.lostandfound.ui.theme.subText
+import com.example.lostandfound.viewmodel.MainViewModel
 
 @Composable
-fun OnboardingScreen(navController: NavHostController) {
+fun OnboardingScreen(mainViewModel: MainViewModel,navController: NavHostController) {
     Column(
         modifier = Modifier.fillMaxSize(),
         horizontalAlignment = Alignment.CenterHorizontally
@@ -60,6 +62,7 @@ fun OnboardingScreen(navController: NavHostController) {
 
         }
         AppButtonBlack(text = "Sign In",modifier = Modifier.fillMaxWidth().padding(top = 76.dp, start = 20.dp, end = 20.dp ).height(56.dp)){
+            mainViewModel.setFirstTimeUser(false)
             navController.navigate(LoginScreenRef){
                 navController.popBackStack()
             }
@@ -67,7 +70,7 @@ fun OnboardingScreen(navController: NavHostController) {
         }
 
         AppButton(text = "Create Account",modifier =  Modifier.fillMaxWidth().padding(top = 14.dp , start = 20.dp, end = 20.dp).height(56.dp)) {
-
+            mainViewModel.setFirstTimeUser(false)
             navController.navigate(CreateAccountScreenRef){
                 navController.popBackStack()
             }
