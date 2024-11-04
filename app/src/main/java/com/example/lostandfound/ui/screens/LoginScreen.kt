@@ -21,13 +21,16 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
+import androidx.navigation.NavController
+import androidx.navigation.NavHostController
 import com.example.lostandfound.ui.AppButtonBlack
 import com.example.lostandfound.ui.PasswordOutlineTextField
+import com.example.lostandfound.ui.navigation.HomeScreenRef
 import com.example.lostandfound.ui.theme.headlineText
 import com.example.lostandfound.ui.theme.labelTextStyle
 
 @Composable
-fun LoginScreen(){
+fun LoginScreen(navController: NavHostController){
 
     Box(Modifier.fillMaxSize()){
 
@@ -99,7 +102,12 @@ fun LoginScreen(){
 
 
 
-            AppButtonBlack("Sign in",Modifier.fillMaxWidth().padding(top = 42.dp, start = 20.dp, end = 20.dp ).height(56.dp)) { }
+            AppButtonBlack("Sign in",Modifier.fillMaxWidth().padding(top = 42.dp, start = 20.dp, end = 20.dp ).height(56.dp)) {
+
+                navController.navigate(HomeScreenRef){
+                    navController.popBackStack()
+                }
+            }
 
 
 

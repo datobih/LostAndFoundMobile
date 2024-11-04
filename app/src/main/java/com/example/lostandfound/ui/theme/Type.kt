@@ -83,3 +83,10 @@ val pinStyle=TextStyle(
     fontSize = 23.sp,
     color = Color.Black
 )
+
+val bottomNavText = TextStyle(
+    fontFamily = Poppins,
+    fontWeight =  FontWeight.Bold,
+    fontSize = 10.sp,
+    color = Color(  0x40000000)
+)
