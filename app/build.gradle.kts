@@ -57,7 +57,7 @@ kapt {
 }
 dependencies {
 
-    val nav_version = "2.8.0"
+    val nav_version = "2.8.3"
 
 
    

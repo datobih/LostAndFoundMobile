@@ -26,6 +26,7 @@ import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import androidx.navigation.NavDestination.Companion.hasRoute
 import androidx.navigation.NavDestination.Companion.hierarchy
+import androidx.navigation.NavGraph.Companion.findStartDestination
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
@@ -33,6 +34,9 @@ import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import com.example.lostandfound.R
 import com.example.lostandfound.ui.screens.Homescreen
+import com.example.lostandfound.ui.screens.ItemsScreen
+import com.example.lostandfound.ui.screens.ProfileScreen
+import com.example.lostandfound.ui.screens.RecoveredScreen
 import com.example.lostandfound.ui.theme.bottomNavText
 import com.example.lostandfound.viewmodel.MainViewModel
 import kotlinx.serialization.Serializable
@@ -81,7 +85,7 @@ fun HomeNavHost(mainViewModel: MainViewModel,parentNavController: NavHostControl
 
     Scaffold(
 
-   bottomBar = { BottomNavigation(backgroundColor = Color.White, contentColor = Color.Blue) {
+   bottomBar = { BottomNavigation(backgroundColor = Color.White) {
 
        val navBackStackEntry by homeNavController.currentBackStackEntryAsState()
        val currentDestination = navBackStackEntry?.destination
@@ -96,16 +100,33 @@ fun HomeNavHost(mainViewModel: MainViewModel,parentNavController: NavHostControl
                     }
 
                 },
-                        label = { Text(homeLevelRoute.name, style = bottomNavText) },
-                        onClick = {},
+                        label = { Text(homeLevelRoute.name, style = bottomNavText, color =  if(isSelected) Color.Black else Color(
+                            0x40000000
+                        )) },
+                        onClick = {
+
+                            homeNavController.navigate(homeLevelRoute.route){
+
+                                popUpTo(homeNavController.graph.startDestinationId){
+                                    saveState = true
+                                }
+
+                                restoreState = true
+                                launchSingleTop =true
+
+                            }
+                        },
                 selected = currentDestination?.hierarchy?.any {  it.hasRoute(homeLevelRoute.route::class) } == true
             )
         }
    } }
     ) { innerPadding ->
-        val navController = rememberNavController()
-     NavHost(navController, startDestination = HomeLevelHomeRef, modifier = Modifier.padding(innerPadding)){
+
+     NavHost(homeNavController, startDestination = HomeLevelHomeRef, modifier = Modifier.padding(innerPadding)){
          composable<HomeLevelHomeRef>{ Homescreen(mainViewModel, parentNavController) }
+         composable<HomeLevelItemsRef>{ ItemsScreen() }
+         composable<HomeLevelRecoveredRef> { RecoveredScreen()  }
+         composable<HomeLevelProfileRef> { ProfileScreen() }
      }
     }
 
