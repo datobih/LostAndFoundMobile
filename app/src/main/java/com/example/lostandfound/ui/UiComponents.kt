@@ -3,12 +3,19 @@ package com.example.lostandfound.ui
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.text.BasicTextField
+import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
+import androidx.compose.material.Card
+import androidx.compose.material.Typography
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Icon
@@ -25,14 +32,19 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.focus.focusRequester
+import androidx.compose.ui.focus.onFocusChanged
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.input.ImeAction
+import androidx.compose.ui.text.input.KeyboardCapitalization
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.input.VisualTransformation
@@ -352,4 +364,89 @@ fun PinTextField(digit:String,
     )
 
 }
+
+
+@Composable
+fun MySearchTextField(
+    text: String,
+    textFieldChange: (String) -> Unit,
+    modifier: Modifier = Modifier
+        .padding(start = 20.dp, top = 16.dp)
+
+        .fillMaxWidth(.9f),
+    onSearch: (String) -> Unit
+) {
+    val focusManager = LocalFocusManager.current
+    val focusRequester = remember {
+        FocusRequester()
+    }
+    var shouldShowHint by remember {
+        mutableStateOf(true)
+    }
+
+    val context = LocalContext.current
+    Card(
+        modifier = modifier, elevation = 4.dp, shape = RoundedCornerShape(10.dp)
+    ) {
+        Row(
+            verticalAlignment = Alignment.CenterVertically,
+            modifier = Modifier
+                .padding(vertical = 10.dp)
+                .padding(start = 10.dp)
+        ) {
+            androidx.compose.material.Icon(painter = painterResource(id = R.drawable.search_icon),
+                contentDescription = "Search icon",
+                modifier = Modifier
+                    .size(15.dp)
+                    .clickable { })
+
+            BasicTextField(value = text,
+                maxLines = 2,
+                textStyle = labelTextStyle,
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(start = 20.dp)
+                    .focusRequester(focusRequester)
+                    .onFocusChanged {
+                        if (it.isFocused) {
+                            shouldShowHint = false
+                        } else {
+                            if (text.isEmpty()) {
+                                shouldShowHint = true
+
+                            }
+                        }
+
+                    },
+                keyboardOptions = KeyboardOptions(
+                    KeyboardCapitalization.None, true, KeyboardType.Text, ImeAction.Search
+                ),
+
+                keyboardActions = KeyboardActions(onSearch = {
+                    focusManager.clearFocus(true)
+                    if (text.isNotEmpty()) onSearch(text)
+                }),
+                onValueChange = {
+
+
+                    textFieldChange(it)
+
+
+                },
+                decorationBox = {
+                    if (text.isEmpty() && shouldShowHint) {
+                        Box(modifier = Modifier.padding(start = 10.dp))
+                        androidx.compose.material.Text(text = "Search")
+                    } else {
+                        it()
+                    }
+                }
+
+            )
+        }
+
+    }
+
+}
+
 

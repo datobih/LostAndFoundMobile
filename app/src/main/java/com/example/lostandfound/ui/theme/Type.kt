@@ -64,6 +64,9 @@ fontFamily = Poppins,
 
 )
 
+
+
+
 val subText = TextStyle(
     fontFamily = Poppins,
     fontWeight =  FontWeight.Normal,
@@ -76,6 +79,14 @@ val tinyText = TextStyle(
     fontWeight =  FontWeight.Bold,
     fontSize = 25.sp,
 )
+
+val text18SB = TextStyle(
+    fontFamily = Poppins,
+    fontSize = 18.sp,
+    fontWeight = FontWeight.SemiBold,
+
+)
+
 
 val pinStyle=TextStyle(
     fontFamily= Poppins,
