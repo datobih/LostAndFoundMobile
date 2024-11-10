@@ -5,6 +5,7 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
+
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
@@ -445,6 +446,14 @@ fun MySearchTextField(
             )
         }
 
+    }
+
+}
+
+@Composable
+fun FilterItem(text: String){
+    Box(modifier = Modifier.padding(horizontal = 2.dp).clip(RoundedCornerShape(7.dp)).background(Color.Black), ){
+        Text(text = text, modifier = Modifier.align(Alignment.Center).padding(10.dp,6.dp), style = labelTextStyle, color = Color.White)
     }
 
 }

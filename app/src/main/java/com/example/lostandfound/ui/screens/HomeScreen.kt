@@ -4,6 +4,8 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.lazy.LazyRow
+import androidx.compose.foundation.lazy.items
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -12,9 +14,11 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import androidx.navigation.NavHostController
+import com.example.lostandfound.ui.FilterItem
 import com.example.lostandfound.ui.MySearchTextField
 import com.example.lostandfound.ui.navigation.OnboardingScreenRef
 import com.example.lostandfound.ui.theme.text18SB
+import com.example.lostandfound.utils.Constants
 import com.example.lostandfound.viewmodel.MainViewModel
 
 @Composable
@@ -29,6 +33,13 @@ fun Homescreen(mainViewModel: MainViewModel,parentNavController: NavHostControll
 
 MySearchTextField("Search for an Item",{}, onSearch = {})
 
+LazyRow(modifier = Modifier.padding(start = 22.dp, end = 22.dp, top = 22.dp, bottom = 0.dp)) {
+
+    items(Constants.filterOptions){
+       FilterItem(it)
+    }
+
+}
 
     }
 
