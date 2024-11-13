@@ -1,13 +1,17 @@
 package com.example.lostandfound.ui
 
 import androidx.compose.foundation.BorderStroke
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
 
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
@@ -19,6 +23,9 @@ import androidx.compose.material.Card
 import androidx.compose.material.Typography
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
+import androidx.compose.material3.CardDefaults
+import androidx.compose.material3.CardElevation
+import androidx.compose.material3.ElevatedCard
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.OutlinedTextField
@@ -40,6 +47,7 @@ import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.focus.focusRequester
 import androidx.compose.ui.focus.onFocusChanged
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.res.painterResource
@@ -49,12 +57,17 @@ import androidx.compose.ui.text.input.KeyboardCapitalization
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.input.VisualTransformation
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.lostandfound.R
 import com.example.lostandfound.ui.theme.Poppins
 import com.example.lostandfound.ui.theme.labelTextStyle
 import com.example.lostandfound.ui.theme.pinStyle
+import com.example.lostandfound.ui.theme.text12N
+import com.example.lostandfound.ui.theme.text12SB
+import com.example.lostandfound.ui.theme.text14Medium
+import com.example.lostandfound.ui.theme.text14SB
 
 
 @Composable
@@ -451,11 +464,60 @@ fun MySearchTextField(
 }
 
 @Composable
-fun FilterItem(text: String){
-    Box(modifier = Modifier.padding(horizontal = 2.dp).clip(RoundedCornerShape(7.dp)).background(Color.Black), ){
-        Text(text = text, modifier = Modifier.align(Alignment.Center).padding(10.dp,6.dp), style = labelTextStyle, color = Color.White)
+fun FilterItem(text: String,isSelected:Boolean = false,onClick: () -> Unit){
+    var bg by remember {
+        mutableStateOf(Color(0xC8BBBBBB))
+    }
+    if(isSelected) bg = Color.Black else bg = Color(0xC8BBBBBB)
+    Box(modifier = Modifier.padding(horizontal = 2.dp).clip(RoundedCornerShape(7.dp)).background(bg).clickable { onClick() }, ){
+        Text(text = text, modifier = Modifier.align(Alignment.Center).padding(10.dp,6.dp), style = labelTextStyle, color = if(isSelected) Color.White else Color.Black)
+    }
+}
+
+
+
+@Composable
+fun OutlinedFilterItem(text: String){
+    Box(modifier = Modifier.padding(horizontal = 2.dp).width(90.dp).border((1.5).dp,Color.Black,RoundedCornerShape(7.dp)).background(Color.Transparent), ){
+        Text(text = text, modifier = Modifier.align(Alignment.Center).padding(10.dp,6.dp), style = text14Medium, color = Color.Black)
+    }
+}
+
+
+@Composable
+fun ItemCard(text:String,description:String){
+    ElevatedCard(elevation = CardDefaults.cardElevation(defaultElevation = 6.dp),
+        colors = CardDefaults.cardColors(containerColor = Color.White), modifier = Modifier.padding(5.dp)) {
+        Column(Modifier.fillMaxSize().padding(bottom = 6.dp)) {
+
+            Image(painter = painterResource(R.drawable.face), contentScale = ContentScale.Fit, contentDescription = "item image")
+
+            Text(text, style = text14SB,
+                modifier = Modifier.fillMaxWidth(.8f).padding(top = 8.dp, start = 10.dp, end = 6.dp), color = Color.Black,overflow = TextOverflow.Ellipsis)
+
+
+            Row(Modifier.padding(top = 4.dp, start = 6.dp, end = 6.dp), verticalAlignment = Alignment.CenterVertically){
+                Image(modifier = Modifier.size(20.dp), painter = painterResource(R.drawable.ic_location), contentScale = ContentScale.Fit, contentDescription = "item image")
+                Text("Laboratory", style = text12N,
+                    modifier = Modifier.padding(start = 4.dp), overflow = TextOverflow.Ellipsis)
+            }
+
+            Row(Modifier.padding(top = 4.dp, start = 6.dp, end = 6.dp), verticalAlignment = Alignment.CenterVertically){
+                Image(modifier = Modifier.size(20.dp), painter = painterResource(R.drawable.ic_calendar), contentScale = ContentScale.Fit, contentDescription = "item image")
+                Text("13nd November 2024", style = text12N,
+                    modifier = Modifier.padding(start = 4.dp), overflow = TextOverflow.Ellipsis)
+            }
+
+        }
     }
 
 }
+
+
+
+
+
+
+
 
 

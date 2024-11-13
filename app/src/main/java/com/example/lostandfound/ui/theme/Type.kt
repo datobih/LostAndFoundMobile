@@ -87,6 +87,35 @@ val text18SB = TextStyle(
 
 )
 
+val text14SB = TextStyle(
+    fontFamily = Poppins,
+    fontSize = 14.sp,
+    fontWeight = FontWeight.SemiBold,
+
+    )
+
+
+val text14Medium = TextStyle(
+    fontFamily = Poppins,
+    fontSize = 14.sp,
+    fontWeight = FontWeight.Medium,
+
+    )
+
+val text12SB = TextStyle(
+    fontFamily = Poppins,
+    fontSize = 12.sp,
+    fontWeight = FontWeight.SemiBold,
+    color = Color.Black
+    )
+
+val text12N = TextStyle(
+    fontFamily = Poppins,
+    fontSize = 12.sp,
+    fontWeight = FontWeight.Normal,
+    color = Color.Black
+    )
+
 
 val pinStyle=TextStyle(
     fontFamily= Poppins,
