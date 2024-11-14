@@ -9,6 +9,7 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
@@ -28,6 +29,7 @@ import androidx.compose.material3.CardElevation
 import androidx.compose.material3.ElevatedCard
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
+import androidx.compose.material3.OutlinedCard
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.OutlinedTextFieldDefaults
 import androidx.compose.material3.Text
@@ -513,7 +515,54 @@ fun ItemCard(text:String,description:String){
 
 }
 
+@Composable
+fun AdItem(){
 
+
+    OutlinedCard(elevation = CardDefaults.cardElevation(6.dp), modifier = Modifier.padding(horizontal = 4.dp, vertical = 8.dp), colors = CardDefaults.cardColors(Color.White)) {
+
+        Row(modifier = Modifier.fillMaxWidth()) {
+
+            Image(painter = painterResource(R.drawable.face), modifier = Modifier.size(70.dp),contentScale = ContentScale.FillHeight, contentDescription = "item image")
+
+            Row(Modifier.padding(top = 16.dp, bottom = 16.dp, start = 5.dp)) {
+                Column(Modifier.fillMaxWidth(.6f)) {
+                    Text("Laboratory", style = text14SB,
+                        modifier = Modifier.padding(start = 6.dp), color = Color.Black,overflow = TextOverflow.Ellipsis)
+
+
+
+                    Row(Modifier.padding(top = 4.dp, start = 6.dp, end = 6.dp), verticalAlignment = Alignment.CenterVertically){
+                        Image(modifier = Modifier.size(16.dp), painter = painterResource(R.drawable.ic_location), contentScale = ContentScale.Fit, contentDescription = "item image")
+                        Text("Gwarinpa", style = text12N,
+                            modifier = Modifier.padding(start = 4.dp), overflow = TextOverflow.Ellipsis)
+                    }
+
+
+
+                }
+
+                Column{
+                    Row(verticalAlignment = Alignment.CenterVertically,){
+                        Image(modifier = Modifier.size(16.dp), painter = painterResource(R.drawable.ic_calendar), contentScale = ContentScale.Fit, contentDescription = "item image")
+                        Text("20-05-2024", style = text12N,
+                            modifier = Modifier.padding(start = 4.dp), overflow = TextOverflow.Ellipsis)
+                    }
+
+                    Text("More Details", style = text12N,
+                        modifier = Modifier.padding(start = 4.dp, top = 5.dp), overflow = TextOverflow.Ellipsis)
+                }
+
+            }
+
+
+        }
+
+    }
+
+
+
+}
 
 
 

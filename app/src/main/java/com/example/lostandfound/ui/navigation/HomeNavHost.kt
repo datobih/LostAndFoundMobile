@@ -1,13 +1,10 @@
 package com.example.lostandfound.ui.navigation
 
 import android.annotation.SuppressLint
-import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.BottomNavigation
 import androidx.compose.material.BottomNavigationItem
-import androidx.compose.material.icons.Icons
-import androidx.compose.material3.BottomAppBar
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Scaffold
 
@@ -18,15 +15,9 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.vector.ImageVector
-import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
-import androidx.navigation.NavController
 import androidx.navigation.NavDestination.Companion.hasRoute
 import androidx.navigation.NavDestination.Companion.hierarchy
-import androidx.navigation.NavGraph.Companion.findStartDestination
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
@@ -34,7 +25,7 @@ import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import com.example.lostandfound.R
 import com.example.lostandfound.ui.screens.Homescreen
-import com.example.lostandfound.ui.screens.ItemsScreen
+import com.example.lostandfound.ui.screens.AdsScreen
 import com.example.lostandfound.ui.screens.ProfileScreen
 import com.example.lostandfound.ui.screens.RecoveredScreen
 import com.example.lostandfound.ui.theme.bottomNavText
@@ -59,7 +50,7 @@ data class HomeLevelRoute<T:Any>(val name:String,val route:T,val icon:Int,val se
 
 val homeLevelRoutes = listOf(
     HomeLevelRoute("Home",HomeLevelHomeRef, R.drawable.ic_home,R.drawable.ic_home),
-    HomeLevelRoute("Items",HomeLevelItemsRef,R.drawable.ic_speaker_one,R.drawable.ic_speaker_one),
+    HomeLevelRoute("My Ads",HomeLevelItemsRef,R.drawable.ic_speaker_one,R.drawable.ic_speaker_one),
     HomeLevelRoute("Recovered",HomeLevelRecoveredRef,R.drawable.ic_bag_check,R.drawable.ic_bag_check),
     HomeLevelRoute("Profile",HomeLevelProfileRef,R.drawable.ic_profile,R.drawable.ic_profile)
 )
@@ -124,7 +115,7 @@ fun HomeNavHost(mainViewModel: MainViewModel,parentNavController: NavHostControl
 
      NavHost(homeNavController, startDestination = HomeLevelHomeRef, modifier = Modifier.padding(innerPadding)){
          composable<HomeLevelHomeRef>{ Homescreen(mainViewModel, parentNavController) }
-         composable<HomeLevelItemsRef>{ ItemsScreen() }
+         composable<HomeLevelItemsRef>{ AdsScreen() }
          composable<HomeLevelRecoveredRef> { RecoveredScreen()  }
          composable<HomeLevelProfileRef> { ProfileScreen() }
      }
