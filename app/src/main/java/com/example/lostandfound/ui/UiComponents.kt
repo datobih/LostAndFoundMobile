@@ -90,12 +90,13 @@ fun AppButtonBlack(text: String, modifier: Modifier, onClick: () -> Unit) {
 }
 
 
-
 @Composable
 fun AppButton(text: String, modifier: Modifier, onClick: () -> Unit) {
     Button(
         modifier = modifier,
-        onClick = onClick, shape = RoundedCornerShape(10.dp), border = BorderStroke(1.dp,Color.Black),
+        onClick = onClick,
+        shape = RoundedCornerShape(10.dp),
+        border = BorderStroke(1.dp, Color.Black),
         colors = ButtonDefaults.buttonColors(Color.Transparent)
     ) {
 
@@ -109,7 +110,12 @@ fun AppButton(text: String, modifier: Modifier, onClick: () -> Unit) {
 }
 
 @Composable
-fun PasswordOutlineTextField(modifier: Modifier,text: String,label:String,onTextChange: (String) ->Unit){
+fun PasswordOutlineTextField(
+    modifier: Modifier,
+    text: String,
+    label: String,
+    onTextChange: (String) -> Unit
+) {
 
     var isPasswordVisible by rememberSaveable {
         mutableStateOf(false)
@@ -134,8 +140,8 @@ fun PasswordOutlineTextField(modifier: Modifier,text: String,label:String,onText
         keyboardOptions = KeyboardOptions(
             keyboardType = KeyboardType.Password
         ),
-        visualTransformation = if (isPasswordVisible)  (VisualTransformation.None) else PasswordVisualTransformation()
-        , trailingIcon = {
+        visualTransformation = if (isPasswordVisible) (VisualTransformation.None) else PasswordVisualTransformation(),
+        trailingIcon = {
             var image = painterResource(R.drawable.password_show)
             if (isPasswordVisible) {
                 image = painterResource(R.drawable.password_hide)
@@ -152,11 +158,9 @@ fun PasswordOutlineTextField(modifier: Modifier,text: String,label:String,onText
 }
 
 
-
-
 @Composable
 fun PinField() {
-    val context= LocalContext.current
+    val context = LocalContext.current
     var firstDigitState by remember {
         mutableStateOf("")
     }
@@ -174,18 +178,17 @@ fun PinField() {
     }
 
 
-    var focusRequest = remember{
+    var focusRequest = remember {
         FocusRequester()
     }
-    var positionState by remember{
+    var positionState by remember {
         mutableStateOf(
             0
         )
     }
-    var changePosition:(Boolean)->Unit = {
-            it->
-        if(positionState<4) {
-            if(it) positionState += 1
+    var changePosition: (Boolean) -> Unit = { it ->
+        if (positionState < 4) {
+            if (it) positionState += 1
             else focusRequest.requestFocus()
         }
 
@@ -193,27 +196,25 @@ fun PinField() {
     }
 
 
-
-    var invalidatePin:(Int)->Unit ={
-            position->
-        for(i in position .. 4){
-            when(i){
-                0->firstDigitState=""
-                1->secondDigitState=""
-                2->thirdDigitState=""
-                3->fourthDigitState=""
-                4->fifthDigitState=""
+    var invalidatePin: (Int) -> Unit = { position ->
+        for (i in position..4) {
+            when (i) {
+                0 -> firstDigitState = ""
+                1 -> secondDigitState = ""
+                2 -> thirdDigitState = ""
+                3 -> fourthDigitState = ""
+                4 -> fifthDigitState = ""
 
 
             }
 
         }
-        positionState=position
+        positionState = position
     }
 
 
     LaunchedEffect(key1 = positionState) {
-        if(positionState<=4 ) {
+        if (positionState <= 4) {
             focusRequest.requestFocus()
 
         }
@@ -224,41 +225,71 @@ fun PinField() {
 //        is UIState.InitialState->{
 
 
-            Row(modifier = Modifier.padding(top = 47.dp, start = 20.dp, end = 10.dp)) {
-                PinTextField(digit = firstDigitState, onChange = {
-                    firstDigitState = it
-                },focusRequester = if(positionState==0) focusRequest else null,changePosition
-                    , invalidatePinChange = invalidatePin,
-                    position = 0,currentPosition = positionState)
-                Box(modifier = Modifier.padding(end = 10.dp))
+    Row(modifier = Modifier.padding(top = 47.dp, start = 20.dp, end = 10.dp)) {
+        PinTextField(
+            digit = firstDigitState,
+            onChange = {
+                firstDigitState = it
+            },
+            focusRequester = if (positionState == 0) focusRequest else null,
+            changePosition,
+            invalidatePinChange = invalidatePin,
+            position = 0,
+            currentPosition = positionState
+        )
+        Box(modifier = Modifier.padding(end = 10.dp))
 
-                PinTextField(digit = secondDigitState, onChange = {
-                    secondDigitState = it
-                },changePosition=changePosition,focusRequester = if(positionState==1) focusRequest else null
-                    , invalidatePinChange = invalidatePin
-                    , position = 1,currentPosition = positionState)
-                Box(modifier = Modifier.padding(end = 10.dp))
+        PinTextField(
+            digit = secondDigitState,
+            onChange = {
+                secondDigitState = it
+            },
+            changePosition = changePosition,
+            focusRequester = if (positionState == 1) focusRequest else null,
+            invalidatePinChange = invalidatePin,
+            position = 1,
+            currentPosition = positionState
+        )
+        Box(modifier = Modifier.padding(end = 10.dp))
 
-                PinTextField(digit = thirdDigitState, onChange = {
-                    thirdDigitState = it
-                },changePosition=changePosition,focusRequester = if(positionState==2) focusRequest else null,
-                    invalidatePinChange = invalidatePin
-                    , position = 2, currentPosition = positionState)
-                Box(modifier = Modifier.padding(end = 10.dp))
+        PinTextField(
+            digit = thirdDigitState,
+            onChange = {
+                thirdDigitState = it
+            },
+            changePosition = changePosition,
+            focusRequester = if (positionState == 2) focusRequest else null,
+            invalidatePinChange = invalidatePin,
+            position = 2,
+            currentPosition = positionState
+        )
+        Box(modifier = Modifier.padding(end = 10.dp))
 
-                PinTextField(digit = fourthDigitState, onChange = {
-                    fourthDigitState = it
-                },changePosition=changePosition,focusRequester = if(positionState==3) focusRequest else null
-                    , invalidatePinChange = invalidatePin,
-                    position=3,currentPosition = positionState)
-                Box(modifier = Modifier.padding(end = 10.dp))
+        PinTextField(
+            digit = fourthDigitState,
+            onChange = {
+                fourthDigitState = it
+            },
+            changePosition = changePosition,
+            focusRequester = if (positionState == 3) focusRequest else null,
+            invalidatePinChange = invalidatePin,
+            position = 3,
+            currentPosition = positionState
+        )
+        Box(modifier = Modifier.padding(end = 10.dp))
 
-                PinTextField(digit = fifthDigitState, onChange = {
-                    fifthDigitState = it
-                },changePosition=changePosition,focusRequester = if(positionState==4) focusRequest else null,
-                    invalidatePinChange = invalidatePin,
-                    position=4,currentPosition = positionState)
-            }
+        PinTextField(
+            digit = fifthDigitState,
+            onChange = {
+                fifthDigitState = it
+            },
+            changePosition = changePosition,
+            focusRequester = if (positionState == 4) focusRequest else null,
+            invalidatePinChange = invalidatePin,
+            position = 4,
+            currentPosition = positionState
+        )
+    }
 
 //            if(positionState<4){
 //                Text(
@@ -271,7 +302,6 @@ fun PinField() {
 //                )
 //
 //            }
-
 
 
 //            if(positionState== 4) {
@@ -310,21 +340,18 @@ fun PinField() {
 //            }
 
 
-        }
-
-
-
-
+}
 
 
 @Composable
-fun PinTextField(digit:String,
-                 onChange:(String)->Unit
-                 , focusRequester: FocusRequester?=null,
-                 changePosition:(Boolean)->Unit,
-                 invalidatePinChange:(Int)->Unit,
-                 position:Int,
-                 currentPosition:Int){
+fun PinTextField(
+    digit: String,
+    onChange: (String) -> Unit, focusRequester: FocusRequester? = null,
+    changePosition: (Boolean) -> Unit,
+    invalidatePinChange: (Int) -> Unit,
+    position: Int,
+    currentPosition: Int
+) {
 
 
     TextField(
@@ -332,15 +359,14 @@ fun PinTextField(digit:String,
         onValueChange = {
 
             if (it.length <= 1) onChange(it)
-            if(it.length==1){
+            if (it.length == 1) {
                 changePosition(true)
-            }
-            else if(it.isEmpty()){
+            } else if (it.isEmpty()) {
                 invalidatePinChange(position)
             }
         },
         singleLine = true,
-        modifier = if(focusRequester==null){
+        modifier = if (focusRequester == null) {
             Modifier
                 .width(60.dp)
                 .border(2.dp, Color(0xFF262626), shape = RoundedCornerShape(10.dp))
@@ -356,20 +382,17 @@ fun PinTextField(digit:String,
 //                    }
 
 
-        }
-        else{
+        } else {
             Modifier
                 .width(60.dp)
                 .background(Color.Transparent)
                 .border(2.dp, Color(0xFF262626), shape = RoundedCornerShape(10.dp))
                 .padding(start = 5.dp)
                 .focusRequester(focusRequester)
-        }
-
-        ,
+        },
         colors = TextFieldDefaults.colors(
-            focusedContainerColor =  Color.Transparent,
-            unfocusedContainerColor =  Color.Transparent,
+            focusedContainerColor = Color.Transparent,
+            unfocusedContainerColor = Color.Transparent,
             focusedIndicatorColor = Color.Transparent,
             unfocusedIndicatorColor = Color.Transparent,
             disabledIndicatorColor = Color.Transparent
@@ -466,48 +489,111 @@ fun MySearchTextField(
 }
 
 @Composable
-fun FilterItem(text: String,isSelected:Boolean = false,onClick: () -> Unit){
+fun FilterItem(text: String, isSelected: Boolean = false, onClick: () -> Unit) {
     var bg by remember {
         mutableStateOf(Color(0xC8BBBBBB))
     }
-    if(isSelected) bg = Color.Black else bg = Color(0xC8BBBBBB)
-    Box(modifier = Modifier.padding(horizontal = 2.dp).clip(RoundedCornerShape(7.dp)).background(bg).clickable { onClick() }, ){
-        Text(text = text, modifier = Modifier.align(Alignment.Center).padding(10.dp,6.dp), style = labelTextStyle, color = if(isSelected) Color.White else Color.Black)
+    if (isSelected) bg = Color.Black else bg = Color(0xC8BBBBBB)
+    Box(
+        modifier = Modifier
+            .padding(horizontal = 2.dp)
+            .clip(RoundedCornerShape(7.dp))
+            .background(bg)
+            .clickable { onClick() },
+    ) {
+        Text(
+            text = text,
+            modifier = Modifier
+                .align(Alignment.Center)
+                .padding(10.dp, 6.dp),
+            style = labelTextStyle,
+            color = if (isSelected) Color.White else Color.Black
+        )
     }
 }
 
 
-
 @Composable
-fun OutlinedFilterItem(text: String){
-    Box(modifier = Modifier.padding(horizontal = 2.dp).width(90.dp).border((1.5).dp,Color.Black,RoundedCornerShape(7.dp)).background(Color.Transparent), ){
-        Text(text = text, modifier = Modifier.align(Alignment.Center).padding(10.dp,6.dp), style = text14Medium, color = Color.Black)
+fun OutlinedFilterItem(text: String) {
+    Box(
+        modifier = Modifier
+            .padding(horizontal = 2.dp)
+            .width(90.dp)
+            .border((1.5).dp, Color.Black, RoundedCornerShape(7.dp))
+            .background(Color.Transparent),
+    ) {
+        Text(
+            text = text,
+            modifier = Modifier
+                .align(Alignment.Center)
+                .padding(10.dp, 6.dp),
+            style = text14Medium,
+            color = Color.Black
+        )
     }
 }
 
 
 @Composable
-fun ItemCard(text:String,description:String){
-    ElevatedCard(elevation = CardDefaults.cardElevation(defaultElevation = 6.dp),
-        colors = CardDefaults.cardColors(containerColor = Color.White), modifier = Modifier.padding(5.dp)) {
-        Column(Modifier.fillMaxSize().padding(bottom = 6.dp)) {
+fun ItemCard(text: String, description: String) {
+    ElevatedCard(
+        elevation = CardDefaults.cardElevation(defaultElevation = 6.dp),
+        colors = CardDefaults.cardColors(containerColor = Color.White),
+        modifier = Modifier.padding(5.dp)
+    ) {
+        Column(
+            Modifier
+                .fillMaxSize()
+                .padding(bottom = 6.dp)
+        ) {
 
-            Image(painter = painterResource(R.drawable.face), contentScale = ContentScale.Fit, contentDescription = "item image")
+            Image(
+                painter = painterResource(R.drawable.face),
+                contentScale = ContentScale.Fit,
+                contentDescription = "item image"
+            )
 
-            Text(text, style = text14SB,
-                modifier = Modifier.fillMaxWidth(.8f).padding(top = 8.dp, start = 10.dp, end = 6.dp), color = Color.Black,overflow = TextOverflow.Ellipsis)
+            Text(
+                text,
+                style = text14SB,
+                modifier = Modifier
+                    .fillMaxWidth(.8f)
+                    .padding(top = 8.dp, start = 10.dp, end = 6.dp),
+                color = Color.Black,
+                overflow = TextOverflow.Ellipsis
+            )
 
 
-            Row(Modifier.padding(top = 4.dp, start = 6.dp, end = 6.dp), verticalAlignment = Alignment.CenterVertically){
-                Image(modifier = Modifier.size(20.dp), painter = painterResource(R.drawable.ic_location), contentScale = ContentScale.Fit, contentDescription = "item image")
-                Text("Laboratory", style = text12N,
-                    modifier = Modifier.padding(start = 4.dp), overflow = TextOverflow.Ellipsis)
+            Row(
+                Modifier.padding(top = 4.dp, start = 6.dp, end = 6.dp),
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+                Image(
+                    modifier = Modifier.size(20.dp),
+                    painter = painterResource(R.drawable.ic_location),
+                    contentScale = ContentScale.Fit,
+                    contentDescription = "item image"
+                )
+                Text(
+                    "Laboratory", style = text12N,
+                    modifier = Modifier.padding(start = 4.dp), overflow = TextOverflow.Ellipsis
+                )
             }
 
-            Row(Modifier.padding(top = 4.dp, start = 6.dp, end = 6.dp), verticalAlignment = Alignment.CenterVertically){
-                Image(modifier = Modifier.size(20.dp), painter = painterResource(R.drawable.ic_calendar), contentScale = ContentScale.Fit, contentDescription = "item image")
-                Text("13nd November 2024", style = text12N,
-                    modifier = Modifier.padding(start = 4.dp), overflow = TextOverflow.Ellipsis)
+            Row(
+                Modifier.padding(top = 4.dp, start = 6.dp, end = 6.dp),
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+                Image(
+                    modifier = Modifier.size(20.dp),
+                    painter = painterResource(R.drawable.ic_calendar),
+                    contentScale = ContentScale.Fit,
+                    contentDescription = "item image"
+                )
+                Text(
+                    "13nd November 2024", style = text12N,
+                    modifier = Modifier.padding(start = 4.dp), overflow = TextOverflow.Ellipsis
+                )
             }
 
         }
@@ -516,41 +602,75 @@ fun ItemCard(text:String,description:String){
 }
 
 @Composable
-fun AdItem(){
-
-
-    OutlinedCard(elevation = CardDefaults.cardElevation(6.dp), modifier = Modifier.padding(horizontal = 4.dp, vertical = 8.dp), colors = CardDefaults.cardColors(Color.White)) {
+fun AdItem() {
+    OutlinedCard(
+        elevation = CardDefaults.cardElevation(6.dp),
+        modifier = Modifier.padding(horizontal = 4.dp, vertical = 8.dp),
+        colors = CardDefaults.cardColors(Color.White)
+    ) {
 
         Row(modifier = Modifier.fillMaxWidth()) {
 
-            Image(painter = painterResource(R.drawable.face), modifier = Modifier.size(70.dp),contentScale = ContentScale.FillHeight, contentDescription = "item image")
+            Image(
+                painter = painterResource(R.drawable.face),
+                modifier = Modifier.size(70.dp),
+                contentScale = ContentScale.FillHeight,
+                contentDescription = "item image"
+            )
 
             Row(Modifier.padding(top = 16.dp, bottom = 16.dp, start = 5.dp)) {
                 Column(Modifier.fillMaxWidth(.6f)) {
-                    Text("Laboratory", style = text14SB,
-                        modifier = Modifier.padding(start = 6.dp), color = Color.Black,overflow = TextOverflow.Ellipsis)
+                    Text(
+                        "Laboratory",
+                        style = text14SB,
+                        modifier = Modifier.padding(start = 6.dp),
+                        color = Color.Black,
+                        overflow = TextOverflow.Ellipsis
+                    )
 
-
-
-                    Row(Modifier.padding(top = 4.dp, start = 6.dp, end = 6.dp), verticalAlignment = Alignment.CenterVertically){
-                        Image(modifier = Modifier.size(16.dp), painter = painterResource(R.drawable.ic_location), contentScale = ContentScale.Fit, contentDescription = "item image")
-                        Text("Gwarinpa", style = text12N,
-                            modifier = Modifier.padding(start = 4.dp), overflow = TextOverflow.Ellipsis)
+                    Row(
+                        Modifier.padding(top = 4.dp, start = 6.dp, end = 6.dp),
+                        verticalAlignment = Alignment.CenterVertically
+                    ) {
+                        Image(
+                            modifier = Modifier.size(16.dp),
+                            painter = painterResource(R.drawable.ic_location),
+                            contentScale = ContentScale.Fit,
+                            contentDescription = "item image"
+                        )
+                        Text(
+                            "Gwarinpa",
+                            style = text12N,
+                            modifier = Modifier.padding(start = 4.dp),
+                            overflow = TextOverflow.Ellipsis
+                        )
                     }
-
 
 
                 }
 
-                Column{
-                    Row(verticalAlignment = Alignment.CenterVertically,){
-                        Image(modifier = Modifier.size(16.dp), painter = painterResource(R.drawable.ic_calendar), contentScale = ContentScale.Fit, contentDescription = "item image")
-                        Text("20-05-2024", style = text12N,
-                            modifier = Modifier.padding(start = 4.dp), overflow = TextOverflow.Ellipsis)
+                Column {
+                    Row(verticalAlignment = Alignment.CenterVertically) {
+                        Image(
+                            modifier = Modifier.size(16.dp),
+                            painter = painterResource(R.drawable.ic_calendar),
+                            contentScale = ContentScale.Fit,
+                            contentDescription = "item image"
+                        )
+                        Text(
+                            "20-05-2024",
+                            style = text12N,
+                            modifier = Modifier.padding(start = 4.dp),
+                            overflow = TextOverflow.Ellipsis
+                        )
                     }
 
-                    Text("More Details", style = text12N,
-                        modifier = Modifier.padding(start = 4.dp, top = 5.dp), overflow = TextOverflow.Ellipsis)
+                    Text(
+                        "More Details",
+                        style = text12N,
+                        modifier = Modifier.padding(start = 4.dp, top = 5.dp),
+                        overflow = TextOverflow.Ellipsis
+                    )
                 }
 
             }
@@ -559,7 +679,6 @@ fun AdItem(){
         }
 
     }
-
 
 
 }

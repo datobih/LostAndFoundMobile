@@ -31,7 +31,7 @@ Box(Modifier.fillMaxSize()){
 
 
 
-        LazyColumn() {
+        LazyColumn(modifier = Modifier.padding(top = 40.dp)) {
 
 
             items(10){

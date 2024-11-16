@@ -80,6 +80,25 @@ val tinyText = TextStyle(
     fontSize = 25.sp,
 )
 
+val text22SB = TextStyle(
+    fontFamily = Poppins,
+    fontWeight =  FontWeight.SemiBold,
+    fontSize = 22.sp,
+)
+
+
+val text16SB = TextStyle(
+    fontFamily = Poppins,
+    fontWeight =  FontWeight.SemiBold,
+    fontSize = 16.sp,
+)
+
+val text16M = TextStyle(
+    fontFamily = Poppins,
+    fontWeight =  FontWeight.Medium,
+    fontSize = 16.sp,
+)
+
 val text18SB = TextStyle(
     fontFamily = Poppins,
     fontSize = 18.sp,
@@ -126,7 +145,7 @@ val pinStyle=TextStyle(
 
 val bottomNavText = TextStyle(
     fontFamily = Poppins,
-    fontWeight =  FontWeight.Bold,
-    fontSize = 10.sp,
+    fontWeight =  FontWeight.SemiBold,
+    fontSize = 12.sp,
     color = Color(  0x40000000)
 )
