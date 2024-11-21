@@ -2,6 +2,7 @@ package com.example.lostandfound.ui.screens
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
@@ -28,7 +29,7 @@ import com.example.lostandfound.ui.theme.text16SB
 import com.example.lostandfound.ui.theme.text22SB
 
 @Composable
-fun ProfileScreen(){
+fun ProfileScreen(toEditProfile: () -> Unit){
 
 
     Column(modifier = Modifier.fillMaxSize().background(Color.White), horizontalAlignment = Alignment.CenterHorizontally) {
@@ -43,9 +44,9 @@ fun ProfileScreen(){
 
 
         Text("David Ayodele", style = text22SB, modifier = Modifier.padding(top = 15.dp))
-        Row(modifier = Modifier.padding(top = 1.dp)) {
+        Row(modifier = Modifier.padding(top = 1.dp,bottom= 50.dp)) {
             Text(
-                "myemail@domain.com",
+                "myemail@domain.com|",
                 style = text14Medium,
 
             )
@@ -57,7 +58,9 @@ fun ProfileScreen(){
         }
 
 
-       Row(modifier = Modifier.align(Alignment.Start).padding(top = 50.dp, start = 30.dp), verticalAlignment = Alignment.CenterVertically){
+       Row(modifier = Modifier.align(Alignment.Start).fillMaxWidth().clickable {
+           toEditProfile()
+       }.padding( top = 5.dp, bottom = 5.dp,start = 30.dp), verticalAlignment = Alignment.CenterVertically){
            Icon(painter = painterResource(R.drawable.ic_edit_info), contentDescription = "Edit", modifier = Modifier.size(30.dp))
            Text("Edit Profile Information", style = text16M, modifier = Modifier.padding(start = 35.dp))
        }

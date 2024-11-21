@@ -22,10 +22,13 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
+import androidx.navigation.compose.navigation
 import androidx.navigation.compose.rememberNavController
 import com.example.lostandfound.R
+import com.example.lostandfound.ui.screens.AddPost
 import com.example.lostandfound.ui.screens.Homescreen
 import com.example.lostandfound.ui.screens.AdsScreen
+import com.example.lostandfound.ui.screens.EditProfileScreen
 import com.example.lostandfound.ui.screens.ProfileScreen
 import com.example.lostandfound.ui.screens.RecoveredScreen
 import com.example.lostandfound.ui.theme.bottomNavText
@@ -40,17 +43,35 @@ object HomeScreenRef
 @Serializable
 object HomeLevelHomeRef
 @Serializable
-object HomeLevelItemsRef
+object HomeLevelPostRef
 @Serializable
 object HomeLevelRecoveredRef
+
+
 @Serializable
 object HomeLevelProfileRef
+
+@Serializable
+object Profile
+
+@Serializable
+object EditProfile
+
+
+@Serializable
+object Posts
+
+@Serializable
+object AddPost
+
+
+
 
 data class HomeLevelRoute<T:Any>(val name:String,val route:T,val icon:Int,val selectedIcon:Int)
 
 val homeLevelRoutes = listOf(
     HomeLevelRoute("Home",HomeLevelHomeRef, R.drawable.ic_home,R.drawable.ic_home),
-    HomeLevelRoute("My Ads",HomeLevelItemsRef,R.drawable.ic_speaker_one,R.drawable.ic_speaker_one),
+    HomeLevelRoute("My Ads",HomeLevelPostRef,R.drawable.ic_speaker_one,R.drawable.ic_speaker_one),
     HomeLevelRoute("Recovered",HomeLevelRecoveredRef,R.drawable.ic_bag_check,R.drawable.ic_bag_check),
     HomeLevelRoute("Profile",HomeLevelProfileRef,R.drawable.ic_profile,R.drawable.ic_profile)
 )
@@ -115,9 +136,17 @@ fun HomeNavHost(mainViewModel: MainViewModel,parentNavController: NavHostControl
 
      NavHost(homeNavController, startDestination = HomeLevelHomeRef, modifier = Modifier.padding(innerPadding)){
          composable<HomeLevelHomeRef>{ Homescreen(mainViewModel, parentNavController) }
-         composable<HomeLevelItemsRef>{ AdsScreen() }
+         navigation<HomeLevelPostRef>(startDestination = Posts) {
+             composable<Posts> { AdsScreen { homeNavController.navigate(AddPost) } }
+            composable<AddPost> { AddPost() }
+         }
          composable<HomeLevelRecoveredRef> { RecoveredScreen()  }
-         composable<HomeLevelProfileRef> { ProfileScreen() }
+
+         navigation<HomeLevelProfileRef>(startDestination = Profile){
+             composable<Profile> { ProfileScreen(toEditProfile = { homeNavController.navigate(EditProfile)   }) }
+             composable<EditProfile>{ EditProfileScreen() }
+         }
+
      }
     }
 

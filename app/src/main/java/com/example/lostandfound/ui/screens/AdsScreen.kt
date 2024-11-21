@@ -21,7 +21,7 @@ import com.example.lostandfound.ui.AdItem
 import com.example.lostandfound.ui.theme.text18SB
 
 @Composable
-fun AdsScreen(){
+fun AdsScreen(toAddPost: () -> Unit){
 Box(Modifier.fillMaxSize()){
 
     Column(Modifier.fillMaxSize().background(Color.White)){
@@ -42,7 +42,10 @@ Box(Modifier.fillMaxSize()){
 
     }
 
-    FloatingActionButton(onClick = {}, modifier = Modifier.padding(end = 22.dp, bottom = 22.dp).align(Alignment.BottomEnd),
+    FloatingActionButton(onClick = {
+        toAddPost()
+
+    }, modifier = Modifier.padding(end = 22.dp, bottom = 22.dp).align(Alignment.BottomEnd),
         backgroundColor = Color.Black,
         contentColor = Color.White
     ) {
