@@ -1,5 +1,9 @@
 package com.example.lostandfound.ui.screens
 
+import android.content.Intent
+import android.net.Uri
+import android.provider.Settings
+import android.widget.Toast
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -19,6 +23,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import com.example.lostandfound.R
@@ -27,16 +32,54 @@ import com.example.lostandfound.ui.theme.text14Medium
 import com.example.lostandfound.ui.theme.text16M
 import com.example.lostandfound.ui.theme.text16SB
 import com.example.lostandfound.ui.theme.text22SB
+import com.google.accompanist.permissions.ExperimentalPermissionsApi
+import com.google.accompanist.permissions.isGranted
+import com.google.accompanist.permissions.rememberPermissionState
+import com.google.accompanist.permissions.shouldShowRationale
 
+@OptIn(ExperimentalPermissionsApi::class)
 @Composable
 fun ProfileScreen(toEditProfile: () -> Unit){
 
-
+val context = LocalContext.current
     Column(modifier = Modifier.fillMaxSize().background(Color.White), horizontalAlignment = Alignment.CenterHorizontally) {
+
+        val cameraPermissionState = rememberPermissionState(
+            android.Manifest.permission.CAMERA
+        )
 
         Image(
             modifier = Modifier.align(Alignment.CenterHorizontally).padding(top = 100.dp)
-                .clip(CircleShape).size(120.dp),
+                .clip(CircleShape).size(120.dp).clickable {
+
+                    if(cameraPermissionState.status.isGranted){
+
+                        Toast.makeText(context, "Permission Granted", Toast.LENGTH_SHORT).show()
+                    }
+
+                    else{
+
+                        if(cameraPermissionState.status.shouldShowRationale){
+                            Toast.makeText(context, "The Camera app is important", Toast.LENGTH_SHORT).show()
+
+                            val intent = Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS,
+                                Uri.fromParts("package",context.packageName,null))
+
+                        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+                            context.startActivity(intent)
+
+                        }
+                        else{
+                            cameraPermissionState.launchPermissionRequest()
+                        }
+
+
+                    }
+
+
+
+
+                },
             painter = painterResource(R.drawable.face),
             contentDescription = "Image",
             contentScale = ContentScale.Crop

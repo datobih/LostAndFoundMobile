@@ -56,6 +56,12 @@ fun CreateAccountScreen() {
             }
 
 
+            var phoneNumber by rememberSaveable {
+                mutableStateOf("")
+            }
+
+
+
             Text(
                 text = "Create account",
                 style = headlineText,
@@ -94,6 +100,22 @@ fun CreateAccountScreen() {
                     confirmPassword = it
                 }
 
+
+
+                OutlinedTextField(
+                    modifier = Modifier
+                        .fillMaxWidth(), label = {
+                        Text(text = "Phone Number", style = labelTextStyle)
+                    },
+                    onValueChange = {
+                        phoneNumber = it
+                    }, value = phoneNumber, colors = OutlinedTextFieldDefaults.colors(
+                        focusedBorderColor = Color.Black,
+                        unfocusedBorderColor = Color(0x14000000),
+                        focusedTextColor = Color.Black,
+                        unfocusedTextColor = Color.Black
+                    )
+                )
             }
 
             AppButtonBlack("Create Account",Modifier.fillMaxWidth().padding(top = 58.dp, start = 20.dp, end = 20.dp ).height(56.dp)) { }

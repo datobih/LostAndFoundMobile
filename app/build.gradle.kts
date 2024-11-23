@@ -86,4 +86,7 @@ dependencies {
     kapt("com.google.dagger:hilt-android-compiler:2.51.1")
 
     implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.6.1")
+
+
+    implementation ("com.google.accompanist:accompanist-permissions:0.36.0")
 }

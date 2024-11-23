@@ -47,7 +47,11 @@ fun AddPost(){
             mutableStateOf("")
         }
 
-        Text(text = "Edit Profile", style = text18SB,
+        var phoneNumber by remember{
+            mutableStateOf("")
+        }
+
+        Text(text = "Post Lost Item", style = text18SB,
             modifier = Modifier.padding(top= 22.dp).align(Alignment.CenterHorizontally)
         )
 
@@ -123,6 +127,30 @@ fun AddPost(){
                 Icon(painter = painterResource(R.drawable.ic_calendar), contentDescription = "")
             }
         )
+
+
+        Text("Contact",style = text14Medium, modifier = Modifier.padding(top = 22.dp, start = 22.dp))
+
+        OutlinedTextField(
+            modifier = Modifier
+                .fillMaxWidth(.9f).align(Alignment.CenterHorizontally), label = {
+                Text(text = "Phone Number", style = labelTextStyle)
+
+            },
+            onValueChange = {
+                phoneNumber = it
+            }, value = phoneNumber, colors = OutlinedTextFieldDefaults.colors(
+                focusedBorderColor = Color.Black,
+                unfocusedBorderColor = Color(0x14000000),
+                focusedTextColor = Color.Black,
+                unfocusedTextColor = Color.Black
+            ), enabled = false, trailingIcon = {
+                Icon(Icons.Rounded.KeyboardArrowDown, contentDescription = "")
+            }, leadingIcon = {
+                Icon(painter = painterResource(R.drawable.ic_calendar), contentDescription = "")
+            }
+        )
+
 
     }
 
