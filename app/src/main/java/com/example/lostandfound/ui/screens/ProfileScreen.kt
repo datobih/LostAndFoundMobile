@@ -4,6 +4,8 @@ import android.content.Intent
 import android.net.Uri
 import android.provider.Settings
 import android.widget.Toast
+import androidx.activity.compose.rememberLauncherForActivityResult
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -18,6 +20,10 @@ import androidx.compose.material.Divider
 import androidx.compose.material.Icon
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -26,35 +32,80 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
+import coil3.compose.AsyncImage
 import com.example.lostandfound.R
 import com.example.lostandfound.ui.AppButtonBlack
 import com.example.lostandfound.ui.theme.text14Medium
 import com.example.lostandfound.ui.theme.text16M
 import com.example.lostandfound.ui.theme.text16SB
 import com.example.lostandfound.ui.theme.text22SB
+import com.example.lostandfound.viewmodel.MainViewModel
 import com.google.accompanist.permissions.ExperimentalPermissionsApi
 import com.google.accompanist.permissions.isGranted
 import com.google.accompanist.permissions.rememberPermissionState
 import com.google.accompanist.permissions.shouldShowRationale
+import kotlin.contracts.contract
 
 @OptIn(ExperimentalPermissionsApi::class)
 @Composable
-fun ProfileScreen(toEditProfile: () -> Unit){
+fun ProfileScreen(toEditProfile: () -> Unit,mainViewModel: MainViewModel){
 
 val context = LocalContext.current
     Column(modifier = Modifier.fillMaxSize().background(Color.White), horizontalAlignment = Alignment.CenterHorizontally) {
 
-        val cameraPermissionState = rememberPermissionState(
-            android.Manifest.permission.CAMERA
+
+        var imageUri : Uri  by remember {
+            mutableStateOf(Uri.EMPTY)
+        }
+
+        val uri by remember {
+
+            mutableStateOf(mainViewModel.createImageUri(context))
+        }
+
+        val cameraPermissionState = rememberPermissionState(android.Manifest.permission.CAMERA)
+
+        val cameraPermissionLauncher = rememberLauncherForActivityResult (contract = ActivityResultContracts.RequestPermission(),
+            onResult = {
+                success->
+
+                if(success){
+
+                    Toast.makeText(context,"COIEJCOJEVOJ",Toast.LENGTH_SHORT).show()
+
+                }
+
+
+
+            })
+
+
+
+
+        val cameraLauncher = rememberLauncherForActivityResult(
+            contract = ActivityResultContracts.TakePicture(),
+            onResult = {success ->
+                if(success){
+                    imageUri = uri
+
+                }
+                else{
+
+                }
+            }
+
         )
 
-        Image(
+        AsyncImage(
             modifier = Modifier.align(Alignment.CenterHorizontally).padding(top = 100.dp)
                 .clip(CircleShape).size(120.dp).clickable {
 
+
+
                     if(cameraPermissionState.status.isGranted){
 
-                        Toast.makeText(context, "Permission Granted", Toast.LENGTH_SHORT).show()
+
+                        cameraLauncher.launch(uri)
                     }
 
                     else{
@@ -70,7 +121,7 @@ val context = LocalContext.current
 
                         }
                         else{
-                            cameraPermissionState.launchPermissionRequest()
+                            cameraPermissionLauncher.launch(android.Manifest.permission.CAMERA)
                         }
 
 
@@ -80,7 +131,7 @@ val context = LocalContext.current
 
 
                 },
-            painter = painterResource(R.drawable.face),
+            model = if(imageUri == Uri.EMPTY) R.drawable.face else imageUri,
             contentDescription = "Image",
             contentScale = ContentScale.Crop
         )

@@ -143,7 +143,7 @@ fun HomeNavHost(mainViewModel: MainViewModel,parentNavController: NavHostControl
          composable<HomeLevelRecoveredRef> { RecoveredScreen()  }
 
          navigation<HomeLevelProfileRef>(startDestination = Profile){
-             composable<Profile> { ProfileScreen(toEditProfile = { homeNavController.navigate(EditProfile)   }) }
+             composable<Profile> { ProfileScreen(toEditProfile = { homeNavController.navigate(EditProfile)   },mainViewModel=mainViewModel)}
              composable<EditProfile>{ EditProfileScreen() }
          }
 
