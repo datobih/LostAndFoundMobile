@@ -21,11 +21,13 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.unit.Constraints
 import androidx.compose.ui.unit.dp
 import com.example.lostandfound.ui.AppButtonBlack
 import com.example.lostandfound.ui.PasswordOutlineTextField
 import com.example.lostandfound.ui.theme.headlineText
 import com.example.lostandfound.ui.theme.labelTextStyle
+import com.example.lostandfound.utils.Constants
 
 @Composable
 fun CreateAccountScreen() {
@@ -37,6 +39,11 @@ fun CreateAccountScreen() {
                 .fillMaxSize(),
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
+
+
+            var validateStates by rememberSaveable {
+                mutableStateOf(false)
+            }
 
             var email by rememberSaveable {
                 mutableStateOf("")
@@ -84,27 +91,33 @@ fun CreateAccountScreen() {
                         focusedTextColor = Color.Black,
                         unfocusedTextColor = Color.Black
                     )
-                )
+                , isError = validateStates && email.isEmpty(), supportingText = {
+
+                    if(validateStates && !Constants.isValidEmail(email)){
+                        Text("Email address is not valid")
+                    }
+                     })
 
 
                 PasswordOutlineTextField(modifier = Modifier
                     .fillMaxWidth()
-                    .padding(top = 22.dp), text = password,label ="Password") {
+                    .padding(top = 11.dp), text = password,label ="Password", isError =(validateStates && (password.length<8)) , onTextChange = {
                     password = it
-                }
-
+                }, errorMessage = "Password must be at least 8 characters")
 
                 PasswordOutlineTextField(modifier = Modifier
                     .fillMaxWidth()
-                    .padding(top = 22.dp),text = confirmPassword,label ="Confirm Password") {
+                    .padding(top = 11.dp),text = confirmPassword,label ="Confirm Password", onTextChange = {
                     confirmPassword = it
-                }
+                }, isError = (validateStates && (confirmPassword.length<8 || password!=confirmPassword)),
+                    errorMessage = if(confirmPassword.length<8) "Confirm password must be at least 8 characters"
+                    else  "Passwords do not match" )
 
 
 
                 OutlinedTextField(
                     modifier = Modifier
-                        .fillMaxWidth(), label = {
+                        .fillMaxWidth().padding(top = 11.dp), label = {
                         Text(text = "Phone Number", style = labelTextStyle)
                     },
                     onValueChange = {
@@ -118,7 +131,11 @@ fun CreateAccountScreen() {
                 )
             }
 
-            AppButtonBlack("Create Account",Modifier.fillMaxWidth().padding(top = 58.dp, start = 20.dp, end = 20.dp ).height(56.dp)) { }
+            AppButtonBlack("Create Account",Modifier.fillMaxWidth().padding(top = 58.dp, start = 20.dp, end = 20.dp ).height(56.dp)) {
+
+                validateStates = true
+
+            }
 
         }
 

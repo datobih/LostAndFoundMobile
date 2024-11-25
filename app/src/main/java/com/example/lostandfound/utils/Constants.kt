@@ -1,5 +1,7 @@
 package com.example.lostandfound.utils
 
+import java.util.regex.Pattern
+
 object Constants {
 
     val SHARED_PREF_NAME = "LostAndFound"
@@ -8,4 +10,11 @@ object Constants {
 
 
     val filterOptions = arrayOf("All Items","Wallets","Electronics","Jewelrys","Bags","Other Accessories")
+
+    fun isValidEmail(email: String): Boolean {
+        val pattern = Pattern.compile("^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:\\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)+\$")
+        val matcher = pattern.matcher(email)
+        return matcher.matches()
+    }
+
 }

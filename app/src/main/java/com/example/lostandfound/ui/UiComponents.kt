@@ -109,7 +109,9 @@ fun PasswordOutlineTextField(
     modifier: Modifier,
     text: String,
     label: String,
-    onTextChange: (String) -> Unit
+    onTextChange: (String) -> Unit,
+    isError:Boolean,
+    errorMessage:String
 ) {
 
     var isPasswordVisible by rememberSaveable {
@@ -135,6 +137,7 @@ fun PasswordOutlineTextField(
         keyboardOptions = KeyboardOptions(
             keyboardType = KeyboardType.Password
         ),
+        isError =(isError),
         visualTransformation = if (isPasswordVisible) (VisualTransformation.None) else PasswordVisualTransformation(),
         trailingIcon = {
             var image = painterResource(R.drawable.password_show)
@@ -149,7 +152,11 @@ fun PasswordOutlineTextField(
                 Icon(painter = image, contentDescription = "password", tint = Color.Black)
             }
         }
-    )
+    , supportingText = {
+        if(isError){
+            Text(errorMessage)
+        }
+        })
 }
 
 

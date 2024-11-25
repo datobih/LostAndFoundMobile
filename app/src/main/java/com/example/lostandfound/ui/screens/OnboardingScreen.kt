@@ -62,7 +62,7 @@ fun OnboardingScreen(mainViewModel: MainViewModel,navController: NavHostControll
 
         }
         AppButtonBlack(text = "Sign In",modifier = Modifier.fillMaxWidth().padding(top = 76.dp, start = 20.dp, end = 20.dp ).height(56.dp)){
-            mainViewModel.setFirstTimeUser(false)
+//            mainViewModel.setFirstTimeUser(false)
             navController.navigate(LoginScreenRef){
                 navController.popBackStack()
             }
@@ -70,7 +70,7 @@ fun OnboardingScreen(mainViewModel: MainViewModel,navController: NavHostControll
         }
 
         AppButton(text = "Create Account",modifier =  Modifier.fillMaxWidth().padding(top = 14.dp , start = 20.dp, end = 20.dp).height(56.dp)) {
-            mainViewModel.setFirstTimeUser(false)
+//            mainViewModel.setFirstTimeUser(false)
             navController.navigate(CreateAccountScreenRef){
                 navController.popBackStack()
             }

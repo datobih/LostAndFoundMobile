@@ -9,6 +9,7 @@ import com.example.lostandfound.repository.MainRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import dagger.hilt.android.qualifiers.ApplicationContext
 import java.io.File
+import java.util.regex.Pattern
 import javax.inject.Inject
 
 @HiltViewModel
@@ -38,5 +39,7 @@ fun isFirstTimeUser():Boolean{
             val imageFile = File.createTempFile("captured_${System.currentTimeMillis()}",".jpg",context.cacheDir)
             return FileProvider.getUriForFile(context,"${context.packageName}.provider",imageFile)
     }
+
+
 
 }

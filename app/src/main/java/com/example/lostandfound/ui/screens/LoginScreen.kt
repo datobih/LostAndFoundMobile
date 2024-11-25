@@ -80,12 +80,12 @@ fun LoginScreen(navController: NavHostController){
                 )
 
 
-                PasswordOutlineTextField(modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(top = 22.dp), text = password,label ="Password") {
-                    password = it
-                }
-
+//                PasswordOutlineTextField(modifier = Modifier
+//                    .fillMaxWidth()
+//                    .padding(top = 22.dp), text = password,label ="Password") {
+//                    password = it
+//                }
+//
 
 
             }
