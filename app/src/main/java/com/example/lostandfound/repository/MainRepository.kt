@@ -2,11 +2,14 @@ package com.example.lostandfound.repository
 
 import android.content.SharedPreferences
 import androidx.core.content.edit
+import com.example.lostandfound.retrofit.NetworkAPIService
 import com.example.lostandfound.utils.Constants
 import javax.inject.Inject
 
-class MainRepository @Inject constructor(val sharedPreferences: SharedPreferences) {
+class MainRepository @Inject constructor(val sharedPreferences: SharedPreferences,
+    val networkAPIService: NetworkAPIService) {
     fun isFirstTimeUser():Boolean{
+
         return sharedPreferences.getBoolean(Constants.IS_FIRST_TIME_USER,true)
     }
 

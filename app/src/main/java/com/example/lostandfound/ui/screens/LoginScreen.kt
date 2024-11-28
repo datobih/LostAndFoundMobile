@@ -28,6 +28,7 @@ import com.example.lostandfound.ui.PasswordOutlineTextField
 import com.example.lostandfound.ui.navigation.HomeScreenRef
 import com.example.lostandfound.ui.theme.headlineText
 import com.example.lostandfound.ui.theme.labelTextStyle
+import com.example.lostandfound.utils.Constants
 
 @Composable
 fun LoginScreen(navController: NavHostController){
@@ -40,13 +41,14 @@ fun LoginScreen(navController: NavHostController){
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
 
+            var validateStates by rememberSaveable {
+                mutableStateOf(false)
+            }
 
             var email by rememberSaveable {
 
                 mutableStateOf("")
             }
-
-
 
             var password by rememberSaveable {
 
@@ -76,16 +78,21 @@ fun LoginScreen(navController: NavHostController){
                         unfocusedBorderColor = Color(0x14000000),
                         focusedTextColor = Color.Black,
                         unfocusedTextColor = Color.Black
-                    )
+                    ), isError = (validateStates && !Constants.isValidEmail(email)),
+                    supportingText = {
+                        if(validateStates && !Constants.isValidEmail(email)){
+                            Text("Email address is not valid")
+                        }
+                    }
                 )
 
 
-//                PasswordOutlineTextField(modifier = Modifier
-//                    .fillMaxWidth()
-//                    .padding(top = 22.dp), text = password,label ="Password") {
-//                    password = it
-//                }
-//
+                PasswordOutlineTextField(modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(top = 11.dp), text = password,label ="Password",onTextChange = {
+                    password = it
+                }, isError = (validateStates && password.length<8) , errorMessage = "Password must be at least 8 characters")
+
 
 
             }
@@ -103,10 +110,10 @@ fun LoginScreen(navController: NavHostController){
 
 
             AppButtonBlack("Sign in",Modifier.fillMaxWidth().padding(top = 42.dp, start = 20.dp, end = 20.dp ).height(56.dp)) {
-
-                navController.navigate(HomeScreenRef){
-                    navController.popBackStack()
-                }
+                validateStates = true
+//                navController.navigate(HomeScreenRef){
+//                    navController.popBackStack()
+//                }
             }
 
 
@@ -138,10 +145,6 @@ fun LoginScreen(navController: NavHostController){
 
             )
         }
-
-
-
-
 
     }
 

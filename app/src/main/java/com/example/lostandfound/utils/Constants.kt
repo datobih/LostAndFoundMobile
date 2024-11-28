@@ -4,6 +4,8 @@ import java.util.regex.Pattern
 
 object Constants {
 
+    val BASE_URL = "http://10.0.2.2/"
+
     val SHARED_PREF_NAME = "LostAndFound"
     val IS_FIRST_TIME_USER = "IS_FIRST_TIME_USER"
     val AUTH_TOKEN = "AUTH_TOKEN"
