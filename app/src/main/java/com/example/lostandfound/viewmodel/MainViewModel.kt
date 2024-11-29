@@ -3,11 +3,17 @@ package com.example.lostandfound.viewmodel
 import android.content.Context
 import android.net.Uri
 import android.os.Environment
+import android.util.Log
 import androidx.core.content.FileProvider
+import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import com.example.lostandfound.repository.MainRepository
+import com.example.lostandfound.retrofit.SignupDTO
+import com.example.lostandfound.utils.UIState
 import dagger.hilt.android.lifecycle.HiltViewModel
 import dagger.hilt.android.qualifiers.ApplicationContext
+import kotlinx.coroutines.launch
 import java.io.File
 import java.util.regex.Pattern
 import javax.inject.Inject
@@ -15,11 +21,32 @@ import javax.inject.Inject
 @HiltViewModel
 class MainViewModel @Inject constructor(val mainRepository: MainRepository) : ViewModel() {
 
+ private val _signupLiveData:MutableLiveData<UIState<Void?>> = MutableLiveData(UIState.InitialState())
+    val signupLiveData:MutableLiveData<UIState<Void?>>
+    get() = _signupLiveData
+
+
+
+
+
 fun isFirstTimeUser():Boolean{
     return mainRepository.isFirstTimeUser()
 }
+fun signUp(signupDTO: SignupDTO){
+    viewModelScope.launch {
 
+        try{
+            mainRepository.signUp(signupDTO).collect{
+                _signupLiveData.postValue(it)
+            }
+        }
+        catch(e:Exception){
+            Log.d("MainViewModel",e.message.toString())
+        }
 
+    }
+
+}
 
     fun setFirstTimeUser(isFirstTime:Boolean){
         mainRepository.setFirstTimeUser(isFirstTime)
