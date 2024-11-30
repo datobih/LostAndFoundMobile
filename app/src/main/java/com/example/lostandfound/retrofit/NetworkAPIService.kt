@@ -9,6 +9,7 @@ interface NetworkAPIService {
     @POST("accounts/signup/")
     fun signupUser(@Body signupDTO:SignupDTO): Call<Void>
 
-
+    @POST("accounts/login/")
+    fun loginUser(@Body loginDTO: LoginDTO): Call<AuthTokenDTO>
 
 }

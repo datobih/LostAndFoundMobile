@@ -38,7 +38,7 @@ fun AppNavHost(mainNavController: NavHostController,mainViewModel: MainViewModel
         composable<HomeScreenRef>{ HomeNavHost(mainViewModel,mainNavController) }
         composable<OnboardingScreenRef> { OnboardingScreen(mainViewModel,mainNavController)  }
         composable<CreateAccountScreenRef> { CreateAccountScreen(mainViewModel,mainNavController)  }
-        composable<LoginScreenRef> { LoginScreen(mainNavController) }
+        composable<LoginScreenRef> { LoginScreen(mainViewModel,mainNavController) }
         composable<ForgotPasswordScreenRef> { ForgotPasswordScreen() }
         composable<ForgotPasswordVerificationScreenRef> { ForgotPasswordVerificationScreen() }
 

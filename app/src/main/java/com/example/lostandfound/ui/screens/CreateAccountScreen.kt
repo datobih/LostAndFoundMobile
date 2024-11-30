@@ -14,6 +14,7 @@ import androidx.compose.material3.OutlinedTextFieldDefaults
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
@@ -39,6 +40,7 @@ import com.example.lostandfound.viewmodel.MainViewModel
 @Composable
 fun CreateAccountScreen(mainViewModel: MainViewModel,navController:NavHostController) {
 
+    val signupUIState by mainViewModel.signupLiveData.observeAsState()
 
     Box(Modifier.fillMaxSize()){
 
@@ -85,7 +87,7 @@ fun CreateAccountScreen(mainViewModel: MainViewModel,navController:NavHostContro
         val isLastNameValid = lastName.isNotEmpty()
 
 
-        when (mainViewModel.signupLiveData.value){
+        when (signupUIState){
             is UIState.InitialState->{
                 Column(
                     modifier = Modifier

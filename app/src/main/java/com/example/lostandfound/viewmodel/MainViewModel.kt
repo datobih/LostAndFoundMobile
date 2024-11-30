@@ -9,6 +9,8 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.lostandfound.repository.MainRepository
+import com.example.lostandfound.retrofit.AuthTokenDTO
+import com.example.lostandfound.retrofit.LoginDTO
 import com.example.lostandfound.retrofit.SignupDTO
 import com.example.lostandfound.utils.UIState
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -27,6 +29,9 @@ class MainViewModel @Inject constructor(val mainRepository: MainRepository) : Vi
 
 
 
+    private val _loginLiveData:MutableLiveData<UIState<AuthTokenDTO?>> = MutableLiveData(UIState.InitialState())
+    val loginLiveData:MutableLiveData<UIState<AuthTokenDTO?>>
+        get() = _loginLiveData
 
 
 fun isFirstTimeUser():Boolean{
@@ -47,6 +52,26 @@ fun signUp(signupDTO: SignupDTO){
     }
 
 }
+
+
+
+    fun login(loginDTO: LoginDTO){
+        viewModelScope.launch {
+
+            try{
+                mainRepository.login(loginDTO).collect{
+                    _loginLiveData.postValue(it)
+                }
+            }
+            catch(e:Exception){
+                Log.d("MainViewModel",e.message.toString())
+            }
+
+        }
+
+    }
+
+
 
     fun setFirstTimeUser(isFirstTime:Boolean){
         mainRepository.setFirstTimeUser(isFirstTime)

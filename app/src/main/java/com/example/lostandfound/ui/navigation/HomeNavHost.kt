@@ -81,16 +81,21 @@ val homeLevelRoutes = listOf(
 @Composable
 fun HomeNavHost(mainViewModel: MainViewModel,parentNavController: NavHostController){
     LaunchedEffect(true) {
+
+        if(mainViewModel.getAuthToken() == null){
         if(mainViewModel.isFirstTimeUser()){
             parentNavController.navigate(OnboardingScreenRef){
                 parentNavController.popBackStack()
             }
         }
-//        else if(mainViewModel.getAuthToken() == null){
-//            parentNavController.navigate(LoginScreenRef){
-//                parentNavController.popBackStack()
-//            }
-//        }
+        else{
+
+            parentNavController.navigate(LoginScreenRef){
+                parentNavController.popBackStack()
+            }
+        }
+
+        }
 
     }
     val homeNavController = rememberNavController()
