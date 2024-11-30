@@ -8,14 +8,20 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.material.Snackbar
+import androidx.compose.material.SnackbarHost
+import androidx.compose.material.SnackbarHostState
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.OutlinedTextFieldDefaults
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
@@ -36,12 +42,14 @@ import com.example.lostandfound.ui.theme.labelTextStyle
 import com.example.lostandfound.utils.Constants
 import com.example.lostandfound.utils.UIState
 import com.example.lostandfound.viewmodel.MainViewModel
+import kotlinx.coroutines.launch
 
 @Composable
 fun CreateAccountScreen(mainViewModel: MainViewModel,navController:NavHostController) {
 
     val signupUIState by mainViewModel.signupLiveData.observeAsState()
-
+    val coroutineScope = rememberCoroutineScope()
+    val snackbarHost = remember{ SnackbarHostState() }
     Box(Modifier.fillMaxSize()){
 
 
@@ -232,6 +240,19 @@ fun CreateAccountScreen(mainViewModel: MainViewModel,navController:NavHostContro
             }
             is UIState.ErrorState ->{
 
+                LaunchedEffect(true){
+                    val errorMessage = (signupUIState as UIState.ErrorState<Void?>).data[0]
+                    coroutineScope.launch {
+
+                        mainViewModel.resetSignupState()
+                        snackbarHost.showSnackbar(errorMessage)
+
+                    }
+                }
+
+
+
+                mainViewModel.resetSignupState()
             }
 
             else -> {}
@@ -262,6 +283,10 @@ fun CreateAccountScreen(mainViewModel: MainViewModel,navController:NavHostContro
                 )
             }
         }
+
+
+        SnackbarHost(snackbarHost)
+
 
         }
 

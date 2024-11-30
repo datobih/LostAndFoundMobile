@@ -46,7 +46,7 @@ fun signUp(signupDTO: SignupDTO){
             }
         }
         catch(e:Exception){
-            Log.d("MainViewModel",e.message.toString())
+            _signupLiveData.postValue(UIState.ErrorState(arrayListOf("An error occured make sure your internet is stable and try again.")))
         }
 
     }
@@ -64,6 +64,7 @@ fun signUp(signupDTO: SignupDTO){
                 }
             }
             catch(e:Exception){
+                _loginLiveData.postValue(UIState.ErrorState(arrayListOf("An error occured make sure your internet is stable and try again.")))
                 Log.d("MainViewModel",e.message.toString())
             }
 
@@ -91,6 +92,16 @@ fun signUp(signupDTO: SignupDTO){
             val imageFile = File.createTempFile("captured_${System.currentTimeMillis()}",".jpg",context.cacheDir)
             return FileProvider.getUriForFile(context,"${context.packageName}.provider",imageFile)
     }
+
+    fun resetSignupState(){
+        _signupLiveData.value = UIState.InitialState()
+    }
+
+
+    fun resetLoginState(){
+        _loginLiveData.value = UIState.InitialState()
+    }
+
 
 
 
