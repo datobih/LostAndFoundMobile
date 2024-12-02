@@ -10,6 +10,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.lostandfound.repository.MainRepository
 import com.example.lostandfound.retrofit.AuthTokenDTO
+import com.example.lostandfound.retrofit.ItemDTO
 import com.example.lostandfound.retrofit.LoginDTO
 import com.example.lostandfound.retrofit.SignupDTO
 import com.example.lostandfound.utils.UIState
@@ -32,6 +33,12 @@ class MainViewModel @Inject constructor(val mainRepository: MainRepository) : Vi
     private val _loginLiveData:MutableLiveData<UIState<AuthTokenDTO?>> = MutableLiveData(UIState.InitialState())
     val loginLiveData:MutableLiveData<UIState<AuthTokenDTO?>>
         get() = _loginLiveData
+
+
+
+    private val _addItemLiveData:MutableLiveData<UIState<Void?>> = MutableLiveData(UIState.InitialState())
+    val addItemLiveData:MutableLiveData<UIState<Void?>>
+        get() = _addItemLiveData
 
 
 fun isFirstTimeUser():Boolean{
@@ -70,6 +77,22 @@ fun signUp(signupDTO: SignupDTO){
 
         }
 
+    }
+
+    fun createLostItem(itemDTO: ItemDTO){
+        viewModelScope.launch {
+
+            try{
+                mainRepository.createLostItem(itemDTO).collect{
+                    _addItemLiveData.postValue(it)
+                }
+            }
+            catch(e:Exception){
+                _loginLiveData.postValue(UIState.ErrorState(arrayListOf("An error occured make sure your internet is stable and try again.")))
+                Log.d("MainViewModel",e.message.toString())
+            }
+
+        }
     }
 
 

@@ -4,6 +4,7 @@ import android.content.SharedPreferences
 import android.util.Log
 import androidx.core.content.edit
 import com.example.lostandfound.retrofit.AuthTokenDTO
+import com.example.lostandfound.retrofit.ItemDTO
 import com.example.lostandfound.retrofit.LoginDTO
 import com.example.lostandfound.retrofit.NetworkAPIService
 import com.example.lostandfound.retrofit.SignupDTO
@@ -12,6 +13,11 @@ import com.example.lostandfound.utils.UIState
 import com.google.gson.Gson
 import com.google.gson.JsonObject
 import kotlinx.coroutines.flow.flow
+import okhttp3.MediaType.Companion.toMediaTypeOrNull
+import okhttp3.MultipartBody
+import okhttp3.RequestBody
+import okhttp3.RequestBody.Companion.asRequestBody
+import okhttp3.RequestBody.Companion.toRequestBody
 import retrofit2.await
 import retrofit2.awaitResponse
 import javax.inject.Inject
@@ -70,6 +76,41 @@ class MainRepository @Inject constructor(val sharedPreferences: SharedPreference
             Log.d("Login", "Login: $errorMessages")
 
         }
+
+    }
+
+    fun createLostItem(itemDTO: ItemDTO) = flow<UIState<Void?>>{
+        emit((UIState.LoadingState()))
+
+        val name = itemDTO.name.toRequestBody("application/json".toMediaTypeOrNull())
+        val description = itemDTO.description.toRequestBody("application/json".toMediaTypeOrNull())
+        val category = itemDTO.category.toRequestBody("application/json".toMediaTypeOrNull())
+        val location = itemDTO.location.toRequestBody("application/json".toMediaTypeOrNull())
+        val imageBody  = itemDTO.image.asRequestBody("multipart/form-data".toMediaTypeOrNull())
+        val imagePart = MultipartBody.Part.createFormData("image",itemDTO.image.name,imageBody)
+
+        val response = networkAPIService.postAddItem(image = imagePart,
+            name = name, description = description,
+            category = category, location = location).awaitResponse()
+
+        if(response.isSuccessful){
+            emit(UIState.SuccessState(null))
+        }
+
+        else{
+
+            val errorBody = response.errorBody()?.string()
+            val errorObj = gson.fromJson(errorBody, JsonObject::class.java)
+            val jsonErrorMessages = errorObj.get("non_field_errors").asJsonArray
+            val errorMessages = ArrayList<String>()
+            for (i in 0 until jsonErrorMessages.size()) {
+                errorMessages.add(jsonErrorMessages.get(i).asString)
+            }
+            emit(UIState.ErrorState(errorMessages!!))
+            Log.d("Add Item", "Add Item: $errorMessages")
+
+        }
+
 
     }
 

@@ -142,8 +142,13 @@ fun LoginScreen(mainViewModel: MainViewModel,navController: NavHostController){
                         validateStates = true
 
                         if(isEmailValid && isPasswordValid){
-                            mainViewModel.login(LoginDTO(email,password))
+                            mainViewModel.setAuthToken("CDCMKCMDCKFM")
+                            navController.navigate(HomeScreenRef){
+                                navController.popBackStack()
+                            }
+//                            mainViewModel.login(LoginDTO(email,password))
                         }
+
 
                     }
 

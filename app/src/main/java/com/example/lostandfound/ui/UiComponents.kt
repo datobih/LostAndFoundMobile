@@ -6,7 +6,9 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
+
 import androidx.compose.foundation.layout.Column
+
 
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
@@ -19,10 +21,16 @@ import androidx.compose.foundation.text.BasicTextField
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.Card
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.rounded.KeyboardArrowDown
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.CardDefaults
+import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.ElevatedCard
+import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.ExposedDropdownMenuBox
+import androidx.compose.material3.ExposedDropdownMenuDefaults
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.OutlinedCard
@@ -550,7 +558,7 @@ fun ItemCard(text: String, description: String) {
         ) {
 
             Image(
-                painter = painterResource(R.drawable.face),
+                painter = painterResource(R.drawable.tesla_revenue),
                 contentScale = ContentScale.Fit,
                 contentDescription = "item image"
             )
@@ -614,7 +622,7 @@ fun AdItem() {
         Row(modifier = Modifier.fillMaxWidth()) {
 
             Image(
-                painter = painterResource(R.drawable.face),
+                painter = painterResource(R.drawable.tesla_revenue),
                 modifier = Modifier.size(70.dp),
                 contentScale = ContentScale.FillHeight,
                 contentDescription = "item image"
@@ -686,6 +694,64 @@ fun AdItem() {
 }
 
 
+@OptIn(ExperimentalMaterial3Api::class)
+@Composable
+fun DropDownTextField(options:List<String>,label:String,icon:Int,text: String,onChange: (String) -> Unit){
+
+    var isExpanded by remember {
+        mutableStateOf(false)
+    }
+    Box(modifier = Modifier.fillMaxWidth()){
+        ExposedDropdownMenuBox(modifier = Modifier.align(Alignment.Center),expanded = isExpanded, onExpandedChange = {isExpanded = !isExpanded}) {
+
+            OutlinedTextField(
+                modifier = Modifier
+                    .fillMaxWidth(.9f).menuAnchor(), label = {
+                   Text(text =label, style = labelTextStyle)
+
+                },
+                onValueChange = {
+                    onChange(it)
+                }, value = text, colors = OutlinedTextFieldDefaults.colors(
+                    focusedBorderColor = Color.Black,
+                    unfocusedBorderColor = Color(0x14000000),
+                    focusedTextColor = Color.Black,
+                    unfocusedTextColor = Color.Black
+                ), enabled = false,trailingIcon = {
+                    Icon(Icons.Rounded.KeyboardArrowDown, contentDescription = "")
+                },leadingIcon = {
+                    Icon(painter = painterResource(icon), contentDescription = "")
+                }
+            )
+
+            ExposedDropdownMenu(modifier = Modifier.fillMaxWidth(),expanded = isExpanded, onDismissRequest = {isExpanded=false}) {
+                options.forEachIndexed { index, s ->
+
+                    DropdownMenuItem(
+                        text = { androidx.compose.material.Text(s) },
+                        onClick = {
+                            isExpanded = false
+                            onChange(s)
+                        },
+                        contentPadding = ExposedDropdownMenuDefaults.ItemContentPadding
+                    )
+
+
+                }
+
+
+
+            }
+
+
+
+
+        }
+
+
+    }
+
+}
 
 
 
