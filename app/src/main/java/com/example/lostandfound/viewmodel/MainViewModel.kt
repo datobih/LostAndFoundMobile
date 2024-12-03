@@ -4,6 +4,7 @@ import android.content.Context
 import android.net.Uri
 import android.os.Environment
 import android.util.Log
+import androidx.compose.material.ripple.rememberRipple
 import androidx.core.content.FileProvider
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -11,6 +12,7 @@ import androidx.lifecycle.viewModelScope
 import com.example.lostandfound.repository.MainRepository
 import com.example.lostandfound.retrofit.AuthTokenDTO
 import com.example.lostandfound.retrofit.ItemDTO
+import com.example.lostandfound.retrofit.ItemResponseDTO
 import com.example.lostandfound.retrofit.LoginDTO
 import com.example.lostandfound.retrofit.SignupDTO
 import com.example.lostandfound.utils.Constants
@@ -28,6 +30,14 @@ class MainViewModel @Inject constructor(val mainRepository: MainRepository) : Vi
  private val _signupLiveData:MutableLiveData<UIState<Void?>> = MutableLiveData(UIState.InitialState())
     val signupLiveData:MutableLiveData<UIState<Void?>>
     get() = _signupLiveData
+
+    private val _getLostItemsLiveData:MutableLiveData<UIState<List<ItemResponseDTO?>>> = MutableLiveData(UIState.InitialState())
+    val getLostItemsLivedata:MutableLiveData<UIState<List<ItemResponseDTO?>>>
+        get() = _getLostItemsLiveData
+
+    private val _getFoundItemsLiveData:MutableLiveData<UIState<List<ItemResponseDTO?>>> = MutableLiveData(UIState.InitialState())
+    val getLostFoundItemsLivedata:MutableLiveData<UIState<List<ItemResponseDTO?>>>
+        get() = _getFoundItemsLiveData
 
 
 
@@ -97,6 +107,33 @@ fun signUp(signupDTO: SignupDTO){
     }
 
 
+    fun getLostItems(){
+        viewModelScope.launch {
+            try{
+                mainRepository.getLostItems().collect{
+                    _getLostItemsLiveData.postValue(it)
+                }
+            }
+            catch(e:Exception){
+                _getLostItemsLiveData.postValue(UIState.ErrorState(arrayListOf("An error occured make sure your internet is stable and try again.")))
+                Log.d("MainViewModel",e.message.toString())
+            }
+        }
+    }
+
+    fun getFoundItems(){
+        viewModelScope.launch {
+            try{
+                mainRepository.getLostItems().collect{
+                    _getFoundItemsLiveData.postValue(it)
+                }
+            }
+            catch(e:Exception){
+                _getFoundItemsLiveData.postValue(UIState.ErrorState(arrayListOf("An error occured make sure your internet is stable and try again.")))
+                Log.d("MainViewModel",e.message.toString())
+            }
+        }
+    }
 
     fun setFirstTimeUser(isFirstTime:Boolean){
         mainRepository.setFirstTimeUser(isFirstTime)

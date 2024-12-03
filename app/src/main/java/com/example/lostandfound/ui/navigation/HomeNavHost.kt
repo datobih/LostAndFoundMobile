@@ -142,9 +142,9 @@ fun HomeNavHost(mainViewModel: MainViewModel,parentNavController: NavHostControl
      NavHost(homeNavController, startDestination = HomeLevelHomeRef, modifier = Modifier.padding(innerPadding)){
          composable<HomeLevelHomeRef>{ Homescreen(mainViewModel, parentNavController) }
          navigation<HomeLevelPostRef>(startDestination = Posts) {
-             composable<Posts> { AdsScreen { homeNavController.navigate(AddPost) } }
+             composable<Posts> { AdsScreen(mainViewModel) { homeNavController.navigate(AddPost) } }
             composable<AddPost> { AddPost(mainViewModel,{ homeNavController.navigate(Posts){
-                homeNavController.popBackStack()
+              popUpTo(Posts){inclusive=true}
             } }) }
          }
          composable<HomeLevelRecoveredRef> { RecoveredScreen()  }

@@ -147,10 +147,10 @@ fun AddPost(mainViewModel: MainViewModel,onBack:()->Unit){
             mutableStateOf("")
         }
 
-        var date by remember{
-
-            mutableStateOf("")
-        }
+//        var date by remember{
+//
+//            mutableStateOf("")
+//        }
 
         var phoneNumber by remember{
             mutableStateOf("")
@@ -222,11 +222,11 @@ fun AddPost(mainViewModel: MainViewModel,onBack:()->Unit){
                 DropDownTextField(Constants.LOCATIONS, "Select Location",R.drawable.ic_location,location,{location = it})
 
 
-                Text("Date Lost",style = text14Medium, modifier = Modifier.padding(top = 22.dp, start = 22.dp))
-
-                DropDownTextField(listOf("A","B"), "Select Date",R.drawable.ic_calendar,date,{date = it})
-
-
+//                Text("Date Lost",style = text14Medium, modifier = Modifier.padding(top = 22.dp, start = 22.dp))
+//
+//                DropDownTextField(listOf("A","B"), "Select Date",R.drawable.ic_calendar,date,{date = it})
+//
+//
 
                 Text("Contact",style = text14Medium, modifier = Modifier.padding(top = 22.dp, start = 22.dp))
 
@@ -291,7 +291,7 @@ fun AddPost(mainViewModel: MainViewModel,onBack:()->Unit){
 
 
                 AnimatedVisibility((category.isNotEmpty() && location.isNotEmpty()
-                        && phoneNumber.isNotEmpty() && date.isNotEmpty() && imageUri != Uri.EMPTY
+                        && phoneNumber.isNotEmpty() && imageUri != Uri.EMPTY
                         && name.isNotEmpty() && description.isNotEmpty()),
                     modifier = Modifier.align(Alignment.CenterHorizontally) ) {
 
@@ -310,7 +310,11 @@ fun AddPost(mainViewModel: MainViewModel,onBack:()->Unit){
 
             }
             is UIState.SuccessState->{
+
+
+
                 Toast.makeText(context,"Item added successfully",Toast.LENGTH_SHORT).show()
+                mainViewModel.resetaddItemState()
                 onBack()
             }
             is UIState.ErrorState->{

@@ -5,6 +5,7 @@ import android.util.Log
 import androidx.core.content.edit
 import com.example.lostandfound.retrofit.AuthTokenDTO
 import com.example.lostandfound.retrofit.ItemDTO
+import com.example.lostandfound.retrofit.ItemResponseDTO
 import com.example.lostandfound.retrofit.LoginDTO
 import com.example.lostandfound.retrofit.NetworkAPIService
 import com.example.lostandfound.retrofit.SignupDTO
@@ -113,6 +114,31 @@ class MainRepository @Inject constructor(val sharedPreferences: SharedPreference
 
 
     }
+
+
+    fun getLostItems()= flow<UIState<List<ItemResponseDTO?>>>{
+        emit(UIState.LoadingState())
+
+        val response = networkAPIService.getLostItems().awaitResponse()
+        if(response.isSuccessful){
+            emit(UIState.SuccessState(response.body()!!))
+        }
+        else{
+
+            val errorBody = response.errorBody()?.string()
+            val errorObj = gson.fromJson(errorBody, JsonObject::class.java)
+            val jsonErrorMessages = errorObj.get("non_field_errors").asJsonArray
+            val errorMessages = ArrayList<String>()
+            for (i in 0 until jsonErrorMessages.size()) {
+                errorMessages.add(jsonErrorMessages.get(i).asString)
+            }
+            emit(UIState.ErrorState(errorMessages!!))
+            Log.d("Get Lost Items", "Get Lost Items: $errorMessages")
+
+        }
+
+    }
+
 
 
     fun setFirstTimeUser(isFirstTime:Boolean){

@@ -22,15 +22,15 @@ fun RecoveredScreen(){
         )
 
 
-
-
-        LazyVerticalGrid(columns = GridCells.Fixed(2), modifier = Modifier.padding(top = 22.dp)) {
-
-            items(23){
-                ItemCard("Book","THis da")
-
-            }
-        }
+//
+//
+//        LazyVerticalGrid(columns = GridCells.Fixed(2), modifier = Modifier.padding(top = 22.dp)) {
+//
+//            items(23){
+//                ItemCard("Book","THis da","")
+//
+//            }
+//        }
 
     }
 

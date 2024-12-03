@@ -26,6 +26,7 @@ import androidx.compose.material.icons.rounded.KeyboardArrowDown
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.CardDefaults
+import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.ElevatedCard
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -66,6 +67,11 @@ import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import coil3.compose.AsyncImage
+import coil3.compose.SubcomposeAsyncImage
+import coil3.request.ImageRequest
+import coil3.request.crossfade
+import coil3.size.Size
 import com.example.lostandfound.R
 import com.example.lostandfound.ui.theme.Poppins
 import com.example.lostandfound.ui.theme.labelTextStyle
@@ -73,6 +79,7 @@ import com.example.lostandfound.ui.theme.pinStyle
 import com.example.lostandfound.ui.theme.text12N
 import com.example.lostandfound.ui.theme.text14Medium
 import com.example.lostandfound.ui.theme.text14SB
+import com.example.lostandfound.utils.Constants
 
 
 @Composable
@@ -545,7 +552,8 @@ fun OutlinedFilterItem(text: String) {
 
 
 @Composable
-fun ItemCard(text: String, description: String) {
+fun ItemCard(text: String, description: String,url:String,location:String,
+             date:String) {
     ElevatedCard(
         elevation = CardDefaults.cardElevation(defaultElevation = 6.dp),
         colors = CardDefaults.cardColors(containerColor = Color.White),
@@ -557,11 +565,22 @@ fun ItemCard(text: String, description: String) {
                 .padding(bottom = 6.dp)
         ) {
 
-            Image(
-                painter = painterResource(R.drawable.tesla_revenue),
-                contentScale = ContentScale.Fit,
-                contentDescription = "item image"
-            )
+
+            SubcomposeAsyncImage(model = ImageRequest.Builder(LocalContext.current)
+                .data(Constants.BASE_URL_UNSLASHED+url).crossfade(true).size(Size(700, 700)).build(),
+                contentDescription = "Product Image",
+                modifier = Modifier,
+                loading = {
+
+                    Box(
+                        modifier = Modifier.fillMaxWidth(), contentAlignment = Alignment.Center
+                    ) {
+                        CircularProgressIndicator(
+                            color = Color.Black, modifier = Modifier.width(40.dp)
+                        )
+                    }
+
+                })
 
             Text(
                 text,
@@ -585,7 +604,7 @@ fun ItemCard(text: String, description: String) {
                     contentDescription = "item image"
                 )
                 Text(
-                    "Laboratory", style = text12N,
+                    location, style = text12N,
                     modifier = Modifier.padding(start = 4.dp), overflow = TextOverflow.Ellipsis
                 )
             }
@@ -601,7 +620,7 @@ fun ItemCard(text: String, description: String) {
                     contentDescription = "item image"
                 )
                 Text(
-                    "13nd November 2024", style = text12N,
+                    date, style = text12N,
                     modifier = Modifier.padding(start = 4.dp), overflow = TextOverflow.Ellipsis
                 )
             }
@@ -612,7 +631,7 @@ fun ItemCard(text: String, description: String) {
 }
 
 @Composable
-fun AdItem() {
+fun AdItem(name:String,location: String,date: String,url:String) {
     OutlinedCard(
         elevation = CardDefaults.cardElevation(6.dp),
         modifier = Modifier.padding(horizontal = 4.dp, vertical = 8.dp),
@@ -621,17 +640,27 @@ fun AdItem() {
 
         Row(modifier = Modifier.fillMaxWidth()) {
 
-            Image(
-                painter = painterResource(R.drawable.tesla_revenue),
+
+            SubcomposeAsyncImage(model = ImageRequest.Builder(LocalContext.current)
+                .data(Constants.BASE_URL_UNSLASHED+url).crossfade(true).size(Size(200, 200)).build(),
+                contentDescription = "Product Image",
                 modifier = Modifier.size(70.dp),
-                contentScale = ContentScale.FillHeight,
-                contentDescription = "item image"
-            )
+                loading = {
+
+                    Box(
+                        modifier = Modifier.fillMaxWidth(), contentAlignment = Alignment.Center
+                    ) {
+                        CircularProgressIndicator(
+                            color = Color.Black, modifier = Modifier.width(40.dp)
+                        )
+                    }
+
+                })
 
             Row(Modifier.padding(top = 16.dp, bottom = 16.dp, start = 5.dp)) {
                 Column(Modifier.fillMaxWidth(.6f)) {
                     Text(
-                        "Laboratory",
+                        name,
                         style = text14SB,
                         modifier = Modifier.padding(start = 6.dp),
                         color = Color.Black,
@@ -649,7 +678,7 @@ fun AdItem() {
                             contentDescription = "item image"
                         )
                         Text(
-                            "Gwarinpa",
+                            location,
                             style = text12N,
                             modifier = Modifier.padding(start = 4.dp),
                             overflow = TextOverflow.Ellipsis
@@ -668,7 +697,7 @@ fun AdItem() {
                             contentDescription = "item image"
                         )
                         Text(
-                            "20-05-2024",
+                            date,
                             style = text12N,
                             modifier = Modifier.padding(start = 4.dp),
                             overflow = TextOverflow.Ellipsis
