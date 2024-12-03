@@ -36,6 +36,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -45,6 +46,8 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.core.content.FileProvider
+import androidx.core.net.toFile
 import com.example.lostandfound.R
 import com.example.lostandfound.retrofit.AuthTokenDTO
 import com.example.lostandfound.retrofit.ItemDTO
@@ -56,6 +59,7 @@ import com.example.lostandfound.ui.navigation.HomeScreenRef
 import com.example.lostandfound.ui.theme.labelTextStyle
 import com.example.lostandfound.ui.theme.text14Medium
 import com.example.lostandfound.ui.theme.text18SB
+import com.example.lostandfound.utils.Constants
 import com.example.lostandfound.utils.UIState
 import com.example.lostandfound.viewmodel.MainViewModel
 import com.google.accompanist.permissions.ExperimentalPermissionsApi
@@ -69,8 +73,11 @@ import java.io.File
     ExperimentalMaterial3Api::class
 )
 @Composable
-fun AddPost(mainViewModel: MainViewModel){
+fun AddPost(mainViewModel: MainViewModel,onBack:()->Unit){
     val context = LocalContext.current
+
+    val coroutineScope = rememberCoroutineScope()
+
 
     var imageUri : Uri by remember {
         mutableStateOf(Uri.EMPTY)
@@ -81,7 +88,7 @@ fun AddPost(mainViewModel: MainViewModel){
         mutableStateOf(mainViewModel.createImageUri(context))
     }
 
-    val addItemState = mainViewModel.addItemLiveData.observeAsState()
+    val addItemState by mainViewModel.addItemLiveData.observeAsState()
 
 
     val cameraPermissionState = rememberPermissionState(android.Manifest.permission.CAMERA)
@@ -152,7 +159,7 @@ fun AddPost(mainViewModel: MainViewModel){
 
 
 
-        when(addItemState.value){
+        when(addItemState){
 
             is UIState.InitialState-> {
 
@@ -201,7 +208,7 @@ fun AddPost(mainViewModel: MainViewModel){
 
 
 
-                DropDownTextField(listOf("A","B"), "Select Option",R.drawable.ic_search,category,{category = it})
+                DropDownTextField(Constants.CATEGORIES, "Select Option",R.drawable.ic_search,category,{category = it})
 
 
 
@@ -212,7 +219,7 @@ fun AddPost(mainViewModel: MainViewModel){
 
 
 
-                DropDownTextField(listOf("A","B"), "Select Location",R.drawable.ic_location,location,{location = it})
+                DropDownTextField(Constants.LOCATIONS, "Select Location",R.drawable.ic_location,location,{location = it})
 
 
                 Text("Date Lost",style = text14Medium, modifier = Modifier.padding(top = 22.dp, start = 22.dp))
@@ -224,9 +231,21 @@ fun AddPost(mainViewModel: MainViewModel){
                 Text("Contact",style = text14Medium, modifier = Modifier.padding(top = 22.dp, start = 22.dp))
 
 
-                DropDownTextField(listOf("A","B"), "Phone Number",R.drawable.ic_contact,phoneNumber) {
-                    phoneNumber = it
-                }
+                OutlinedTextField(
+                    modifier = Modifier
+                        .fillMaxWidth(.9f).align(Alignment.CenterHorizontally), label = {
+                        Text(text = "Phone Number", style = labelTextStyle)
+                    },
+                    onValueChange = {
+                        if(phoneNumber.length<=12)
+                        phoneNumber = it
+                    }, value =phoneNumber, colors = OutlinedTextFieldDefaults.colors(
+                        focusedBorderColor = Color.Black,
+                        unfocusedBorderColor = Color(0x14000000),
+                        focusedTextColor = Color.Black,
+                        unfocusedTextColor = Color.Black
+                    )
+                )
 
 
 
@@ -277,7 +296,7 @@ fun AddPost(mainViewModel: MainViewModel){
                     modifier = Modifier.align(Alignment.CenterHorizontally) ) {
 
                     AppButtonBlack("Post",Modifier.fillMaxWidth(.9f).padding(top = 42.dp).height(56.dp)) {
-                        val file =File(imageUri.path!!)
+                        val file = Constants.imageTempFile!!
                         mainViewModel.createLostItem(ItemDTO(image = file, name = name,
                             description = description,
                             location = location, category = category))
@@ -291,11 +310,21 @@ fun AddPost(mainViewModel: MainViewModel){
 
             }
             is UIState.SuccessState->{
-
+                Toast.makeText(context,"Item added successfully",Toast.LENGTH_SHORT).show()
+                onBack()
             }
             is UIState.ErrorState->{
+                LaunchedEffect(true) {
+                    coroutineScope.launch{
+                        val errorMessage = (addItemState as UIState.ErrorState<Void?>).data[0]
+                        mainViewModel.resetaddItemState()
+                       Toast.makeText(context,errorMessage,Toast.LENGTH_SHORT).show()
 
+                    }
                 }
+
+
+            }
 
             is UIState.LoadingState->{
                 Box(modifier = Modifier.fillMaxSize()){

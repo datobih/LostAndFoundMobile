@@ -1,5 +1,6 @@
 package com.example.lostandfound.utils
 
+import java.io.File
 import java.util.regex.Pattern
 
 object Constants {
@@ -11,6 +12,16 @@ object Constants {
     val AUTH_TOKEN = "AUTH_TOKEN"
 
 
+
+    val LOCATIONS = listOf("Braaksma Hall",
+        "Alumni Hall","Arnold Guebert Library",
+        "Founders Hall","Eberhardt Hall","Wangerin House",
+        "Schwermann Hall","Allan Wachowich Centre",
+        "Guild Hall","Tegler",""
+        )
+
+    val CATEGORIES = listOf("Wallets","Electronics","Jewelrys","Bags","Other Accessories")
+    var imageTempFile: File? =null
     val filterOptions = arrayOf("All Items","Wallets","Electronics","Jewelrys","Bags","Other Accessories")
 
     fun isValidEmail(email: String): Boolean {

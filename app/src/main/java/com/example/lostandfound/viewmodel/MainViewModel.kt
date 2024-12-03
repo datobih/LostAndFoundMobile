@@ -13,6 +13,7 @@ import com.example.lostandfound.retrofit.AuthTokenDTO
 import com.example.lostandfound.retrofit.ItemDTO
 import com.example.lostandfound.retrofit.LoginDTO
 import com.example.lostandfound.retrofit.SignupDTO
+import com.example.lostandfound.utils.Constants
 import com.example.lostandfound.utils.UIState
 import dagger.hilt.android.lifecycle.HiltViewModel
 import dagger.hilt.android.qualifiers.ApplicationContext
@@ -113,7 +114,8 @@ fun signUp(signupDTO: SignupDTO){
 
     fun createImageUri(context: Context): Uri{
             val imageFile = File.createTempFile("captured_${System.currentTimeMillis()}",".jpg",context.cacheDir)
-            return FileProvider.getUriForFile(context,"${context.packageName}.provider",imageFile)
+        Constants.imageTempFile = imageFile
+        return FileProvider.getUriForFile(context,"${context.packageName}.provider",imageFile)
     }
 
     fun resetSignupState(){
@@ -127,5 +129,8 @@ fun signUp(signupDTO: SignupDTO){
 
 
 
+    fun resetaddItemState(){
+        _addItemLiveData.value = UIState.InitialState()
+    }
 
 }

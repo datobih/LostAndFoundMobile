@@ -131,13 +131,13 @@ val context = LocalContext.current
 
 
                 },
-            model = if(imageUri == Uri.EMPTY) R.drawable.face else imageUri,
+            model = if(imageUri == Uri.EMPTY) R.drawable.me else imageUri,
             contentDescription = "Image",
             contentScale = ContentScale.Crop
         )
 
 
-        Text("David Ayodele", style = text22SB, modifier = Modifier.padding(top = 15.dp))
+        Text("Richard Ketiku", style = text22SB, modifier = Modifier.padding(top = 15.dp))
         Row(modifier = Modifier.padding(top = 1.dp,bottom= 50.dp)) {
             Text(
                 "myemail@domain.com|",

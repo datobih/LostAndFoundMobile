@@ -143,7 +143,9 @@ fun HomeNavHost(mainViewModel: MainViewModel,parentNavController: NavHostControl
          composable<HomeLevelHomeRef>{ Homescreen(mainViewModel, parentNavController) }
          navigation<HomeLevelPostRef>(startDestination = Posts) {
              composable<Posts> { AdsScreen { homeNavController.navigate(AddPost) } }
-            composable<AddPost> { AddPost(mainViewModel) }
+            composable<AddPost> { AddPost(mainViewModel,{ homeNavController.navigate(Posts){
+                homeNavController.popBackStack()
+            } }) }
          }
          composable<HomeLevelRecoveredRef> { RecoveredScreen()  }
 

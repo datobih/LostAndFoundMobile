@@ -27,7 +27,7 @@ Box(Modifier.fillMaxSize()){
     Column(Modifier.fillMaxSize().background(Color.White)){
 
 
-        Text(text = "Ads", style = text18SB, modifier = Modifier.padding(start = 22.dp,top= 22.dp))
+        Text(text = "My Ads", style = text18SB, modifier = Modifier.padding(start = 22.dp,top= 22.dp))
 
 
 

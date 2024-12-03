@@ -1,5 +1,6 @@
 package com.example.lostandfound.ui.screens
 
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -13,11 +14,13 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import androidx.navigation.NavHostController
+import com.example.lostandfound.R
 import com.example.lostandfound.ui.AppButton
 import com.example.lostandfound.ui.AppButtonBlack
 import com.example.lostandfound.ui.navigation.CreateAccountScreenRef
@@ -36,17 +39,17 @@ fun OnboardingScreen(mainViewModel: MainViewModel,navController: NavHostControll
 
 
     Box(modifier = Modifier.padding(top = 70.dp,start = 40.dp, end = 40.dp)) {
-        Box(
+        Image(
             modifier = Modifier.fillMaxWidth()
-                .height(273.dp)
-                .background(Color.Black)
+                .height(323.dp)
+            , painter = painterResource(R.drawable.logo), contentDescription = ""
         )
     }
 
-        Column(modifier = Modifier.padding(horizontal = 20.dp)) {
+        Column(modifier = Modifier.fillMaxWidth().padding(horizontal = 20.dp)) {
             Text(text = "Welcome to Lost And Found",
                 style = headlineText,
-                modifier = Modifier.padding(top = 67.dp),
+                modifier = Modifier.padding(),
                 textAlign = TextAlign.Center
 
             )
