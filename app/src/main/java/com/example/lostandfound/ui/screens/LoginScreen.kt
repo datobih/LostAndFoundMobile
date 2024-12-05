@@ -127,14 +127,14 @@ fun LoginScreen(mainViewModel: MainViewModel,navController: NavHostController){
                     }
 
 
-                    Text(
-                        text = "Forgot password?",
-                        style = labelTextStyle,
-                        modifier = Modifier.fillMaxWidth().padding(top=15.dp, start = 20.dp,end=20.dp),
-                        textAlign = TextAlign.Right,
-                        color = Color.Black
-
-                    )
+//                    Text(
+//                        text = "Forgot password?",
+//                        style = labelTextStyle,
+//                        modifier = Modifier.fillMaxWidth().padding(top=15.dp, start = 20.dp,end=20.dp),
+//                        textAlign = TextAlign.Right,
+//                        color = Color.Black
+//
+//                    )
 
 
 

@@ -2,9 +2,7 @@ package com.example.lostandfound.viewmodel
 
 import android.content.Context
 import android.net.Uri
-import android.os.Environment
 import android.util.Log
-import androidx.compose.material.ripple.rememberRipple
 import androidx.core.content.FileProvider
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -15,13 +13,12 @@ import com.example.lostandfound.retrofit.ItemDTO
 import com.example.lostandfound.retrofit.ItemResponseDTO
 import com.example.lostandfound.retrofit.LoginDTO
 import com.example.lostandfound.retrofit.SignupDTO
+import com.example.lostandfound.retrofit.UserProfileDTO
 import com.example.lostandfound.utils.Constants
 import com.example.lostandfound.utils.UIState
 import dagger.hilt.android.lifecycle.HiltViewModel
-import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.launch
 import java.io.File
-import java.util.regex.Pattern
 import javax.inject.Inject
 
 @HiltViewModel
@@ -57,6 +54,11 @@ class MainViewModel @Inject constructor(val mainRepository: MainRepository) : Vi
     private val _addItemLiveData:MutableLiveData<UIState<Void?>> = MutableLiveData(UIState.InitialState())
     val addItemLiveData:MutableLiveData<UIState<Void?>>
         get() = _addItemLiveData
+
+
+    private val _getProfileDataLiveData:MutableLiveData<UIState<UserProfileDTO?>> = MutableLiveData(UIState.InitialState())
+    val getProfileDataLiveData:MutableLiveData<UIState<UserProfileDTO?>>
+        get() = _getProfileDataLiveData
 
 
 fun isFirstTimeUser():Boolean{
@@ -159,6 +161,23 @@ fun signUp(signupDTO: SignupDTO){
         }
     }
 
+
+    fun getProfileData(){
+        viewModelScope.launch {
+            try{
+                mainRepository.getProfileData().collect{
+                    _getProfileDataLiveData.postValue(it)
+                }
+            }
+            catch(e:Exception){
+                _getProfileDataLiveData.postValue(UIState.ErrorState(arrayListOf("An error occured make sure your internet is stable and try again.")))
+                Log.d("MainViewModel",e.message.toString())
+            }
+        }
+
+    }
+
+
     fun setFirstTimeUser(isFirstTime:Boolean){
         mainRepository.setFirstTimeUser(isFirstTime)
     }
@@ -189,13 +208,21 @@ fun signUp(signupDTO: SignupDTO){
     }
 
 
-    fun resetgetAdsLoginState(){
+    fun resetGetAdsState(){
         _getAdsItemsLiveData.value = UIState.InitialState()
     }
 
 
-    fun resetaddItemState(){
+    fun resetAddItemState(){
         _addItemLiveData.value = UIState.InitialState()
+    }
+
+    fun resetFoundItemState(){
+        _getFoundItemsLiveData.value = UIState.InitialState()
+    }
+
+    fun resetGetProfileState(){
+        _getFoundItemsLiveData.value = UIState.InitialState()
     }
 
 }

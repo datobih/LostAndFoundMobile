@@ -35,4 +35,11 @@ interface NetworkAPIService {
                     @Part("category") category: RequestBody,
                     @Part("location") location: RequestBody,
                     @Part("description") description: RequestBody):Call<Any>
+
+
+
+
+    @GET("accounts/profile/")
+    fun getProfileData(
+        @Header("AUTHORIZATION") tokenVal: String):Call<UserProfileDTO>
 }

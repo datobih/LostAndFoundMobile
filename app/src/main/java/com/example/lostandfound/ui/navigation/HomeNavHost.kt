@@ -147,7 +147,7 @@ fun HomeNavHost(mainViewModel: MainViewModel,parentNavController: NavHostControl
               popUpTo(Posts){inclusive=true}
             } }) }
          }
-         composable<HomeLevelRecoveredRef> { RecoveredScreen()  }
+         composable<HomeLevelRecoveredRef> { RecoveredScreen(mainViewModel)  }
 
          navigation<HomeLevelProfileRef>(startDestination = Profile){
              composable<Profile> { ProfileScreen(toEditProfile = { homeNavController.navigate(EditProfile)   },mainViewModel=mainViewModel)}

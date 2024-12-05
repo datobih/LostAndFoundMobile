@@ -567,7 +567,7 @@ fun ItemCard(text: String, description: String,url:String,location:String,
 
 
             SubcomposeAsyncImage(model = ImageRequest.Builder(LocalContext.current)
-                .data(Constants.BASE_URL_UNSLASHED+url).crossfade(true).size(Size(700, 700)).build(),
+                .data(Constants.BASE_URL_UNSLASHED+url).crossfade(true).build(),
                 contentDescription = "Product Image",
                 modifier = Modifier,
                 loading = {
@@ -580,7 +580,7 @@ fun ItemCard(text: String, description: String,url:String,location:String,
                         )
                     }
 
-                })
+                }, contentScale = ContentScale.Crop)
 
             Text(
                 text,
@@ -642,7 +642,7 @@ fun AdItem(name:String,location: String,date: String,url:String) {
 
 
             SubcomposeAsyncImage(model = ImageRequest.Builder(LocalContext.current)
-                .data(Constants.BASE_URL_UNSLASHED+url).crossfade(true).size(Size(200, 200)).build(),
+                .data(Constants.BASE_URL_UNSLASHED+url).crossfade(true).build(),
                 contentDescription = "Product Image",
                 modifier = Modifier.size(70.dp),
                 loading = {
@@ -655,7 +655,7 @@ fun AdItem(name:String,location: String,date: String,url:String) {
                         )
                     }
 
-                })
+                }, contentScale = ContentScale.Crop)
 
             Row(Modifier.padding(top = 16.dp, bottom = 16.dp, start = 5.dp)) {
                 Column(Modifier.fillMaxWidth(.6f)) {

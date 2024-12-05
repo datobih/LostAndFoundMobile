@@ -20,13 +20,8 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.ExperimentalMaterialApi
-import androidx.compose.material3.ExposedDropdownMenuDefaults
-import androidx.compose.material3.ExposedDropdownMenuBox
 import androidx.compose.material.Text
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.rounded.KeyboardArrowDown
 import androidx.compose.material3.CircularProgressIndicator
-import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.OutlinedTextField
@@ -44,19 +39,12 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.core.content.FileProvider
-import androidx.core.net.toFile
 import com.example.lostandfound.R
-import com.example.lostandfound.retrofit.AuthTokenDTO
 import com.example.lostandfound.retrofit.ItemDTO
-import com.example.lostandfound.retrofit.LoginDTO
 import com.example.lostandfound.ui.AppButtonBlack
 import com.example.lostandfound.ui.DropDownTextField
-import com.example.lostandfound.ui.PasswordOutlineTextField
-import com.example.lostandfound.ui.navigation.HomeScreenRef
 import com.example.lostandfound.ui.theme.labelTextStyle
 import com.example.lostandfound.ui.theme.text14Medium
 import com.example.lostandfound.ui.theme.text18SB
@@ -68,7 +56,6 @@ import com.google.accompanist.permissions.isGranted
 import com.google.accompanist.permissions.rememberPermissionState
 import com.google.accompanist.permissions.shouldShowRationale
 import kotlinx.coroutines.launch
-import java.io.File
 
 @OptIn(ExperimentalPermissionsApi::class, ExperimentalMaterialApi::class,
     ExperimentalMaterial3Api::class
@@ -312,17 +299,20 @@ fun AddPost(mainViewModel: MainViewModel,onBack:()->Unit){
             }
             is UIState.SuccessState->{
 
+                LaunchedEffect(true) {
+                    Toast.makeText(context,"Item added successfully",Toast.LENGTH_SHORT).show()
+                    mainViewModel.resetAddItemState()
+                    onBack()
+
+                }
 
 
-                Toast.makeText(context,"Item added successfully",Toast.LENGTH_SHORT).show()
-                mainViewModel.resetaddItemState()
-                onBack()
             }
             is UIState.ErrorState->{
                 LaunchedEffect(true) {
                     coroutineScope.launch{
                         val errorMessage = (addItemState as UIState.ErrorState<Void?>).data[0]
-                        mainViewModel.resetaddItemState()
+                        mainViewModel.resetAddItemState()
                        Toast.makeText(context,errorMessage,Toast.LENGTH_SHORT).show()
 
                     }

@@ -9,6 +9,7 @@ import com.example.lostandfound.retrofit.ItemResponseDTO
 import com.example.lostandfound.retrofit.LoginDTO
 import com.example.lostandfound.retrofit.NetworkAPIService
 import com.example.lostandfound.retrofit.SignupDTO
+import com.example.lostandfound.retrofit.UserProfileDTO
 import com.example.lostandfound.utils.Constants
 import com.example.lostandfound.utils.UIState
 import com.google.gson.Gson
@@ -165,6 +166,30 @@ class MainRepository @Inject constructor(val sharedPreferences: SharedPreference
 
     }
 
+
+    fun getProfileData()= flow<UIState<UserProfileDTO?>>{
+
+        emit(UIState.LoadingState())
+
+        val response = networkAPIService.getProfileData(tokenVal ="Bearer ${getAuthToken()!!}").awaitResponse()
+        if(response.isSuccessful){
+            emit(UIState.SuccessState(response.body()!!))
+        }
+        else{
+
+            val errorBody = response.errorBody()?.string()
+            val errorObj = gson.fromJson(errorBody, JsonObject::class.java)
+            val jsonErrorMessages = errorObj.get("non_field_errors").asJsonArray
+            val errorMessages = ArrayList<String>()
+            for (i in 0 until jsonErrorMessages.size()) {
+                errorMessages.add(jsonErrorMessages.get(i).asString)
+            }
+            emit(UIState.ErrorState(errorMessages!!))
+            Log.d("Get Profile Detail", "Get Profile Detail: $errorMessages")
+
+        }
+
+    }
 
 
     fun setFirstTimeUser(isFirstTime:Boolean){

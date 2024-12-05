@@ -7,7 +7,6 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.material.FloatingActionButton
 import androidx.compose.material.Icon
 import androidx.compose.material.Text
@@ -38,9 +37,7 @@ Box(Modifier.fillMaxSize()){
 
     val context = LocalContext.current
 
-    LaunchedEffect(true) {
-        mainViewModel.getMyAdsItems()
-    }
+
     val coroutineScope = rememberCoroutineScope()
 
 
@@ -60,14 +57,16 @@ Box(Modifier.fillMaxSize()){
                 LaunchedEffect(true) {
                     coroutineScope.launch{
                         val errorMessage = (getAdsItems as UIState.ErrorState<ArrayList<String>>).data[0]
-                        mainViewModel.resetLoginState()
+                        mainViewModel.resetGetAdsState()
                         Toast.makeText(context,errorMessage, Toast.LENGTH_LONG).show()
 
                     }
                 }
             }
             is UIState.InitialState -> {
-
+                LaunchedEffect(true) {
+                    mainViewModel.getMyAdsItems()
+                }
             }
             is UIState.LoadingState -> {
                 Box(modifier = Modifier.fillMaxSize()){
