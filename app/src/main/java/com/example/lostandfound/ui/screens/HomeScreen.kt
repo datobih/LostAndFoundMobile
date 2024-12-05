@@ -20,10 +20,13 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.livedata.observeAsState
+import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
+import androidx.compose.runtime.snapshots.SnapshotStateList
+import androidx.compose.runtime.toMutableStateList
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -63,22 +66,24 @@ fun Homescreen(mainViewModel: MainViewModel,parentNavController: NavHostControll
     var searchText by remember {
         mutableStateOf("")
     }
+    val getLostItems by mainViewModel.getLostItemsLivedata.observeAsState()
+    var data = remember { mutableStateListOf<ItemResponseDTO?>() }
 
     Column(modifier = Modifier
         .fillMaxSize()
         .background(Color.White)){
 
 
-        val getLostItems by mainViewModel.getLostItemsLivedata.observeAsState()
+
 
 
         Text(text = "Campus", style = text18SB, modifier = Modifier.padding(start = 22.dp,top= 22.dp))
 
 MySearchTextField(searchText,{searchText = it}, onSearch = {
 
+mainViewModel.searchItems(it)
 
-
-})
+}, onEmpty = {mainViewModel.getLostItems()})
 
 LazyRow(modifier = Modifier.padding(start = 22.dp, end = 22.dp, top = 22.dp, bottom = 0.dp)) {
 
@@ -90,11 +95,11 @@ LazyRow(modifier = Modifier.padding(start = 22.dp, end = 22.dp, top = 22.dp, bot
 
 }
 
-        Row(Modifier.padding(top = 15.dp, start = 22.dp)){
-            OutlinedFilterItem("Lost")
-            OutlinedFilterItem("Found")
-            OutlinedFilterItem("Location")
-        }
+//        Row(Modifier.padding(top = 15.dp, start = 22.dp)){
+//            OutlinedFilterItem("Lost")
+//            OutlinedFilterItem("Found")
+//            OutlinedFilterItem("Location")
+//        }
 
 
 
@@ -114,35 +119,68 @@ LazyRow(modifier = Modifier.padding(start = 22.dp, end = 22.dp, top = 22.dp, bot
                     Column(horizontalAlignment = Alignment.CenterHorizontally) {
                         Text(text = "Something went wrong.",style = text16SB)
                        AppButton(text = "Retry", modifier = Modifier.padding(top = 15.dp)) {
-                           mainViewModel.getLostItems()
+                           if(searchText.isEmpty()){
+                               mainViewModel.getLostItems()
+                           }
+                           else{
+                               mainViewModel.searchItems(searchText)
+                           }
+
                        }
                     }
 
                 }
 
-                LaunchedEffect(true) {
-                    coroutineScope.launch{
-                        val errorMessage = (getLostItems as UIState.ErrorState<ArrayList<String>>).data[0]
-                        mainViewModel.resetLoginState()
-                        Toast.makeText(context,errorMessage,Toast.LENGTH_LONG).show()
-
-                    }
-                }
+//                LaunchedEffect(true) {
+//                    coroutineScope.launch{
+//                        val errorMessage = (getLostItems as UIState.ErrorState<ArrayList<String>>).data[0]
+//                        mainViewModel.resetLoginState()
+//                        Toast.makeText(context,errorMessage,Toast.LENGTH_LONG).show()
+//
+//                    }
+//                }
             }
             is UIState.InitialState -> {
 
             }
             is UIState.SuccessState -> {
-                val data = (getLostItems as UIState.SuccessState<List<ItemResponseDTO?>>).data
-                LazyVerticalGrid(columns = GridCells.Fixed(2), modifier = Modifier.padding(top = 22.dp)) {
+                LaunchedEffect(selectedPosition) {
+                    data.clear()
+                    data.addAll((getLostItems as UIState.SuccessState<List<ItemResponseDTO?>>).data)
+                    //Filter Data to match Selection query
 
-                    items(data.size){
-                        val content =data[it]!!
-                        ItemCard(content.name,content.description, url = content.image,
-                            content.location,content.dateUpdated.slice(0..9))
+                        if(selectedPosition != 0){
+                            val tempData = data.filter {
+                               it!!.category == Constants.CATEGORIES[selectedPosition-1]
+                           }.toMutableStateList()
+                            data.clear()
+                            data.addAll(tempData)
 
                     }
                 }
+
+
+                if(data.isNotEmpty()){
+                    LazyVerticalGrid(columns = GridCells.Fixed(2), modifier = Modifier.padding(top = 22.dp)) {
+
+                        items(data.size){
+                            val content =data[it]!!
+                            ItemCard(content.name,content.description, url = content.image,
+                                content.location,content.dateUpdated.slice(0..9))
+
+                        }
+                    }
+                }
+                else{
+                    Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center){
+                        Column(horizontalAlignment = Alignment.CenterHorizontally) {
+                            Text(text = "No Item available at the moment",style = text16SB)
+
+                        }
+
+                    }
+                }
+
 
             }
             null -> {

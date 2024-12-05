@@ -151,11 +151,27 @@ fun signUp(signupDTO: SignupDTO){
         viewModelScope.launch {
             try{
                 mainRepository.getLostItems().collect{
+
                     _getFoundItemsLiveData.postValue(it)
                 }
             }
             catch(e:Exception){
                 _getFoundItemsLiveData.postValue(UIState.ErrorState(arrayListOf("An error occured make sure your internet is stable and try again.")))
+                Log.d("MainViewModel",e.message.toString())
+            }
+        }
+    }
+
+    fun searchItems(query:String){
+        viewModelScope.launch {
+            try{
+                mainRepository.searchItems(query).collect{
+                    Log.d("WORKING", "getFoundItems: WORKING")
+                    _getLostItemsLiveData.postValue(it)
+                }
+            }
+            catch(e:Exception){
+                _getLostItemsLiveData.postValue(UIState.ErrorState(arrayListOf("An error occured make sure your internet is stable and try again.")))
                 Log.d("MainViewModel",e.message.toString())
             }
         }

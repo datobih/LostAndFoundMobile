@@ -39,6 +39,13 @@ interface NetworkAPIService {
 
 
 
+    @POST("api/search-item/")
+    fun postSearchItem(
+        @Header("AUTHORIZATION") tokenVal: String,
+        @Body queryDTO: QueryDTO):Call<List<ItemResponseDTO>>
+
+
+
     @GET("accounts/profile/")
     fun getProfileData(
         @Header("AUTHORIZATION") tokenVal: String):Call<UserProfileDTO>

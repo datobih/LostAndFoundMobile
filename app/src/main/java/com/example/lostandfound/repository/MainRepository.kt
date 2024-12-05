@@ -8,6 +8,7 @@ import com.example.lostandfound.retrofit.ItemDTO
 import com.example.lostandfound.retrofit.ItemResponseDTO
 import com.example.lostandfound.retrofit.LoginDTO
 import com.example.lostandfound.retrofit.NetworkAPIService
+import com.example.lostandfound.retrofit.QueryDTO
 import com.example.lostandfound.retrofit.SignupDTO
 import com.example.lostandfound.retrofit.UserProfileDTO
 import com.example.lostandfound.utils.Constants
@@ -136,6 +137,31 @@ class MainRepository @Inject constructor(val sharedPreferences: SharedPreference
             }
             emit(UIState.ErrorState(errorMessages!!))
             Log.d("Get Lost Items", "Get Lost Items: $errorMessages")
+
+        }
+
+    }
+
+    fun searchItems(query:String)= flow<UIState<List<ItemResponseDTO?>>>{
+        emit(UIState.LoadingState())
+
+        val response = networkAPIService.postSearchItem(tokenVal ="Bearer ${getAuthToken()!!}",
+            QueryDTO(query)
+        ).awaitResponse()
+        if(response.isSuccessful){
+            emit(UIState.SuccessState(response.body()!!))
+        }
+        else{
+
+            val errorBody = response.errorBody()?.string()
+            val errorObj = gson.fromJson(errorBody, JsonObject::class.java)
+            val jsonErrorMessages = errorObj.get("non_field_errors").asJsonArray
+            val errorMessages = ArrayList<String>()
+            for (i in 0 until jsonErrorMessages.size()) {
+                errorMessages.add(jsonErrorMessages.get(i).asString)
+            }
+            emit(UIState.ErrorState(errorMessages!!))
+            Log.d("Search Items", "Search Items: $errorMessages")
 
         }
 

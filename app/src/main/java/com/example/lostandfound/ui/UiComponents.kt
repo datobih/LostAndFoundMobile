@@ -430,7 +430,8 @@ fun MySearchTextField(
         .padding(start = 20.dp, top = 16.dp)
 
         .fillMaxWidth(.9f),
-    onSearch: (String) -> Unit
+    onSearch: (String) -> Unit,
+    onEmpty:() -> Unit
 ) {
     val focusManager = LocalFocusManager.current
     val focusRequester = remember {
@@ -479,14 +480,17 @@ fun MySearchTextField(
                 ),
 
                 keyboardActions = KeyboardActions(onSearch = {
-                    focusManager.clearFocus(true)
+
                     if (text.isNotEmpty()) onSearch(text)
+                    focusManager.clearFocus(true)
                 }),
                 onValueChange = {
 
 
                     textFieldChange(it)
-
+                    if(it.isEmpty()){
+                        onEmpty()
+                    }
 
                 },
                 decorationBox = {
