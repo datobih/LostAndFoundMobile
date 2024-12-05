@@ -22,10 +22,15 @@ interface NetworkAPIService {
     @GET("api/lost-items/")
     fun getLostItems(): Call<List<ItemResponseDTO>>
 
+    @GET("api/get-my-ads/")
+    fun getMyAdsItems(@Header("AUTHORIZATION") tokenVal: String): Call<List<ItemResponseDTO>>
+
 
     @Multipart
     @POST("api/create-lost-item/")
-    fun postAddItem(@Part image : MultipartBody.Part,
+    fun postAddItem(
+        @Header("AUTHORIZATION") tokenVal: String,
+                    @Part image : MultipartBody.Part,
                     @Part("name") name: RequestBody,
                     @Part("category") category: RequestBody,
                     @Part("location") location: RequestBody,

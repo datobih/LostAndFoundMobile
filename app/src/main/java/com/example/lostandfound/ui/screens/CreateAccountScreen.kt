@@ -233,9 +233,12 @@ fun CreateAccountScreen(mainViewModel: MainViewModel,navController:NavHostContro
                 CircularProgressIndicator(modifier = Modifier.align(Alignment.Center))
             }
             is UIState.SuccessState ->{
-                navController.navigate(LoginScreenRef){
-                    navController.popBackStack()
+                LaunchedEffect(true) {
+                    navController.navigate(LoginScreenRef){
+                        navController.popBackStack()
+                    }
                 }
+
 
             }
             is UIState.ErrorState ->{
@@ -250,9 +253,6 @@ fun CreateAccountScreen(mainViewModel: MainViewModel,navController:NavHostContro
                     }
                 }
 
-
-
-                mainViewModel.resetSignupState()
             }
 
             else -> {}

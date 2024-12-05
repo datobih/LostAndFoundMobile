@@ -1,5 +1,6 @@
 package com.example.lostandfound.ui.screens
 
+import android.widget.Toast
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -28,6 +29,7 @@ import com.example.lostandfound.ui.AdItem
 import com.example.lostandfound.ui.theme.text18SB
 import com.example.lostandfound.utils.UIState
 import com.example.lostandfound.viewmodel.MainViewModel
+import kotlinx.coroutines.launch
 
 @Composable
 fun AdsScreen(mainViewModel:MainViewModel,toAddPost: () -> Unit){
@@ -37,12 +39,12 @@ Box(Modifier.fillMaxSize()){
     val context = LocalContext.current
 
     LaunchedEffect(true) {
-        mainViewModel.getFoundItems()
+        mainViewModel.getMyAdsItems()
     }
     val coroutineScope = rememberCoroutineScope()
 
 
-    val getFoundItems by mainViewModel.getLostFoundItemsLivedata.observeAsState()
+    val getAdsItems by mainViewModel.getAdsItemsLiveData.observeAsState()
 
     Column(
         Modifier
@@ -53,9 +55,16 @@ Box(Modifier.fillMaxSize()){
         Text(text = "My Ads", style = text18SB, modifier = Modifier.padding(start = 22.dp,top= 22.dp))
 
 
-        when(getFoundItems){
+        when(getAdsItems){
             is UIState.ErrorState -> {
+                LaunchedEffect(true) {
+                    coroutineScope.launch{
+                        val errorMessage = (getAdsItems as UIState.ErrorState<ArrayList<String>>).data[0]
+                        mainViewModel.resetLoginState()
+                        Toast.makeText(context,errorMessage, Toast.LENGTH_LONG).show()
 
+                    }
+                }
             }
             is UIState.InitialState -> {
 
@@ -66,7 +75,7 @@ Box(Modifier.fillMaxSize()){
                 }
             }
             is UIState.SuccessState -> {
-                val data = (getFoundItems as UIState.SuccessState<List<ItemResponseDTO?>>).data
+                val data = (getAdsItems as UIState.SuccessState<List<ItemResponseDTO?>>).data
 
                 LazyColumn(modifier = Modifier.padding(top = 40.dp)) {
                     items(data.size){

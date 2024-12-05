@@ -154,11 +154,15 @@ fun LoginScreen(mainViewModel: MainViewModel,navController: NavHostController){
 
                 }
                 is UIState.SuccessState->{
-                  val data =  (loginUIState as UIState.SuccessState<AuthTokenDTO?>).data!!
-                    mainViewModel.setAuthToken(data.accessToken)
-                    navController.navigate(HomeScreenRef){
-                        navController.popBackStack()
+                    LaunchedEffect(true) {
+                        val data =  (loginUIState as UIState.SuccessState<AuthTokenDTO?>).data!!
+                        mainViewModel.setAuthToken(data.accessToken)
+                        navController.navigate(HomeScreenRef){
+                            navController.popBackStack()
+                        }
+
                     }
+
                 }
                 is UIState.ErrorState->{
                     LaunchedEffect(true) {

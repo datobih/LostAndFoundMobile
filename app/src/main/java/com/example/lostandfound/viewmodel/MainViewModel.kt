@@ -41,6 +41,13 @@ class MainViewModel @Inject constructor(val mainRepository: MainRepository) : Vi
 
 
 
+    private val _getAdsItemsLiveData:MutableLiveData<UIState<List<ItemResponseDTO?>>> = MutableLiveData(UIState.InitialState())
+    val getAdsItemsLiveData:MutableLiveData<UIState<List<ItemResponseDTO?>>>
+        get() = _getAdsItemsLiveData
+
+
+
+
     private val _loginLiveData:MutableLiveData<UIState<AuthTokenDTO?>> = MutableLiveData(UIState.InitialState())
     val loginLiveData:MutableLiveData<UIState<AuthTokenDTO?>>
         get() = _loginLiveData
@@ -121,6 +128,23 @@ fun signUp(signupDTO: SignupDTO){
         }
     }
 
+
+
+    fun getMyAdsItems(){
+        viewModelScope.launch {
+            try{
+                mainRepository.getMyAdsItems().collect{
+                    _getAdsItemsLiveData.postValue(it)
+                }
+            }
+            catch(e:Exception){
+                _getAdsItemsLiveData.postValue(UIState.ErrorState(arrayListOf("An error occured make sure your internet is stable and try again.")))
+                Log.d("MainViewModel",e.message.toString())
+            }
+        }
+    }
+
+
     fun getFoundItems(){
         viewModelScope.launch {
             try{
@@ -164,6 +188,10 @@ fun signUp(signupDTO: SignupDTO){
         _loginLiveData.value = UIState.InitialState()
     }
 
+
+    fun resetgetAdsLoginState(){
+        _getAdsItemsLiveData.value = UIState.InitialState()
+    }
 
 
     fun resetaddItemState(){

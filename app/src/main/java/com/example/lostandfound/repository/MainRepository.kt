@@ -67,6 +67,7 @@ class MainRepository @Inject constructor(val sharedPreferences: SharedPreference
         else{
 
             val errorBody = response.errorBody()?.string()
+            Log.d("SOMN", "SOMN: $errorBody")
             val errorObj = gson.fromJson(errorBody, JsonObject::class.java)
             val jsonErrorMessages = errorObj.get("non_field_errors").asJsonArray
             val errorMessages = ArrayList<String>()
@@ -90,7 +91,7 @@ class MainRepository @Inject constructor(val sharedPreferences: SharedPreference
         val imageBody  = itemDTO.image.asRequestBody("multipart/form-data".toMediaTypeOrNull())
         val imagePart = MultipartBody.Part.createFormData("image",itemDTO.image.name,imageBody)
 
-        val response = networkAPIService.postAddItem(image = imagePart,
+        val response = networkAPIService.postAddItem(tokenVal ="Bearer ${getAuthToken()!!}" ,image = imagePart,
             name = name, description = description,
             category = category, location = location).awaitResponse()
 
@@ -120,6 +121,31 @@ class MainRepository @Inject constructor(val sharedPreferences: SharedPreference
         emit(UIState.LoadingState())
 
         val response = networkAPIService.getLostItems().awaitResponse()
+        if(response.isSuccessful){
+            emit(UIState.SuccessState(response.body()!!))
+        }
+        else{
+
+            val errorBody = response.errorBody()?.string()
+            val errorObj = gson.fromJson(errorBody, JsonObject::class.java)
+            val jsonErrorMessages = errorObj.get("non_field_errors").asJsonArray
+            val errorMessages = ArrayList<String>()
+            for (i in 0 until jsonErrorMessages.size()) {
+                errorMessages.add(jsonErrorMessages.get(i).asString)
+            }
+            emit(UIState.ErrorState(errorMessages!!))
+            Log.d("Get Lost Items", "Get Lost Items: $errorMessages")
+
+        }
+
+    }
+
+
+
+    fun getMyAdsItems()= flow<UIState<List<ItemResponseDTO?>>>{
+        emit(UIState.LoadingState())
+
+        val response = networkAPIService.getMyAdsItems(tokenVal ="Bearer ${getAuthToken()!!}").awaitResponse()
         if(response.isSuccessful){
             emit(UIState.SuccessState(response.body()!!))
         }

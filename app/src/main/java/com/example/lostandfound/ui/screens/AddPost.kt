@@ -7,6 +7,7 @@ import android.widget.Toast
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -125,7 +126,7 @@ fun AddPost(mainViewModel: MainViewModel,onBack:()->Unit){
     )
 
 
-    Column(modifier = Modifier.fillMaxWidth().fillMaxHeight().padding(bottom = 20.dp).verticalScroll(rememberScrollState())) {
+    Column(modifier = Modifier.fillMaxWidth().fillMaxHeight().background(Color.White).padding(bottom = 20.dp).verticalScroll(rememberScrollState())) {
 
 
         var name  by remember{
