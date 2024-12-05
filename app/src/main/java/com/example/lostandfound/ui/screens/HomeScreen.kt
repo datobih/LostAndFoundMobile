@@ -11,7 +11,10 @@ import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.lazy.items
+import androidx.compose.material.ButtonColors
+import androidx.compose.material.OutlinedButton
 import androidx.compose.material.Text
+import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -30,11 +33,15 @@ import androidx.navigation.NavController
 import androidx.navigation.NavHostController
 import com.example.lostandfound.retrofit.AuthTokenDTO
 import com.example.lostandfound.retrofit.ItemResponseDTO
+import com.example.lostandfound.ui.AppButton
 import com.example.lostandfound.ui.FilterItem
 import com.example.lostandfound.ui.ItemCard
 import com.example.lostandfound.ui.MySearchTextField
 import com.example.lostandfound.ui.OutlinedFilterItem
 import com.example.lostandfound.ui.navigation.OnboardingScreenRef
+import com.example.lostandfound.ui.theme.text14Medium
+import com.example.lostandfound.ui.theme.text14SB
+import com.example.lostandfound.ui.theme.text16SB
 import com.example.lostandfound.ui.theme.text18SB
 import com.example.lostandfound.utils.Constants
 import com.example.lostandfound.utils.UIState
@@ -53,7 +60,9 @@ fun Homescreen(mainViewModel: MainViewModel,parentNavController: NavHostControll
         mainViewModel.getLostItems()
     }
     val coroutineScope = rememberCoroutineScope()
-
+    var searchText by remember {
+        mutableStateOf("")
+    }
 
     Column(modifier = Modifier
         .fillMaxSize()
@@ -65,7 +74,11 @@ fun Homescreen(mainViewModel: MainViewModel,parentNavController: NavHostControll
 
         Text(text = "Campus", style = text18SB, modifier = Modifier.padding(start = 22.dp,top= 22.dp))
 
-MySearchTextField("Search for an Item",{}, onSearch = {})
+MySearchTextField(searchText,{searchText = it}, onSearch = {
+
+
+
+})
 
 LazyRow(modifier = Modifier.padding(start = 22.dp, end = 22.dp, top = 22.dp, bottom = 0.dp)) {
 
@@ -95,6 +108,18 @@ LazyRow(modifier = Modifier.padding(start = 22.dp, end = 22.dp, top = 22.dp, bot
          }
 
             is UIState.ErrorState -> {
+
+
+                Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center){
+                    Column(horizontalAlignment = Alignment.CenterHorizontally) {
+                        Text(text = "Something went wrong.",style = text16SB)
+                       AppButton(text = "Retry", modifier = Modifier.padding(top = 15.dp)) {
+                           mainViewModel.getLostItems()
+                       }
+                    }
+
+                }
+
                 LaunchedEffect(true) {
                     coroutineScope.launch{
                         val errorMessage = (getLostItems as UIState.ErrorState<ArrayList<String>>).data[0]

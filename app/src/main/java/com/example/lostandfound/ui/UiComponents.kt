@@ -492,7 +492,7 @@ fun MySearchTextField(
                 decorationBox = {
                     if (text.isEmpty() && shouldShowHint) {
                         Box(modifier = Modifier.padding(start = 10.dp))
-                        androidx.compose.material.Text(text = "Search")
+                        androidx.compose.material.Text(text = "Search for item")
                     } else {
                         it()
                     }

@@ -222,7 +222,10 @@ fun signUp(signupDTO: SignupDTO){
     }
 
     fun resetGetProfileState(){
-        _getFoundItemsLiveData.value = UIState.InitialState()
+        _getProfileDataLiveData.value = UIState.InitialState()
+    }
+    fun resetGetLostItemsState(){
+        _getLostItemsLiveData.value = UIState.InitialState()
     }
 
 }
