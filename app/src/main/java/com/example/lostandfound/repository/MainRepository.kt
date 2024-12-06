@@ -230,6 +230,12 @@ class MainRepository @Inject constructor(val sharedPreferences: SharedPreference
         }
     }
 
+    fun logout(){
+        sharedPreferences.edit(commit = true){
+            putString(Constants.AUTH_TOKEN,null)
+        }
+    }
+
     fun getAuthToken():String?{
        return sharedPreferences.getString(Constants.AUTH_TOKEN,null)
     }

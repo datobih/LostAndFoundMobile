@@ -19,7 +19,9 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import com.example.lostandfound.retrofit.ItemResponseDTO
+import com.example.lostandfound.ui.AppButton
 import com.example.lostandfound.ui.ItemCard
+import com.example.lostandfound.ui.theme.text16SB
 import com.example.lostandfound.ui.theme.text18SB
 import com.example.lostandfound.utils.UIState
 import com.example.lostandfound.viewmodel.MainViewModel
@@ -42,11 +44,21 @@ fun RecoveredScreen(mainViewModel: MainViewModel){
 
         when(foundItemsState){
             is UIState.ErrorState -> {
-                LaunchedEffect(true) {
-                        val errorMessage = (foundItemsState as UIState.ErrorState<Void?>).data[0]
-                        mainViewModel.resetFoundItemState()
-                        Toast.makeText(context,errorMessage, Toast.LENGTH_SHORT).show()
+                Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center){
+                    Column(horizontalAlignment = Alignment.CenterHorizontally) {
+                        Text(text = "Something went wrong.",style = text16SB)
+                        AppButton(text = "Retry", modifier = Modifier.padding(top = 15.dp)) {
+                            mainViewModel.resetFoundItemState()
+                        }
+                    }
+
                 }
+//
+//                LaunchedEffect(true) {
+//                        val errorMessage = (foundItemsState as UIState.ErrorState<Void?>).data[0]
+//                        mainViewModel.resetFoundItemState()
+//                        Toast.makeText(context,errorMessage, Toast.LENGTH_SHORT).show()
+//                }
             }
             is UIState.InitialState -> {
                 LaunchedEffect(true) {
@@ -64,7 +76,7 @@ fun RecoveredScreen(mainViewModel: MainViewModel){
                     modifier = Modifier.padding(top = 22.dp)) {
                     items(data.size){
                    val content = data[it]!!
-                ItemCard(content.name,content.description,content.image,content.location,content.dateUpdated.slice(0..9))
+                ItemCard(content.name,content.description,content.image,content.location,content.dateCreated.slice(0..9),{})
 
                     }
                 }

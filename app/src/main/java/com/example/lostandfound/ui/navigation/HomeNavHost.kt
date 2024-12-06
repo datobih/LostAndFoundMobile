@@ -150,7 +150,14 @@ fun HomeNavHost(mainViewModel: MainViewModel,parentNavController: NavHostControl
          composable<HomeLevelRecoveredRef> { RecoveredScreen(mainViewModel)  }
 
          navigation<HomeLevelProfileRef>(startDestination = Profile){
-             composable<Profile> { ProfileScreen(toEditProfile = { homeNavController.navigate(EditProfile)   },mainViewModel=mainViewModel)}
+             composable<Profile> { ProfileScreen(toEditProfile = { homeNavController.navigate(EditProfile)   },mainViewModel=mainViewModel,
+                 onLogout = {
+                     parentNavController.navigate(LoginScreenRef){
+                         popUpTo(LoginScreenRef)
+                     }
+
+                 })
+       }
              composable<EditProfile>{ EditProfileScreen() }
          }
 

@@ -203,6 +203,10 @@ fun signUp(signupDTO: SignupDTO){
         mainRepository.setAuthToken(token)
     }
 
+    fun logout(){
+        mainRepository.logout()
+    }
+
     fun getAuthToken():String?{
         return mainRepository.getAuthToken()
     }

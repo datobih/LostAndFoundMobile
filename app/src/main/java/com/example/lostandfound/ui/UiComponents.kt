@@ -73,6 +73,8 @@ import coil3.request.ImageRequest
 import coil3.request.crossfade
 import coil3.size.Size
 import com.example.lostandfound.R
+import com.example.lostandfound.retrofit.ItemDTO
+import com.example.lostandfound.retrofit.ItemResponseDTO
 import com.example.lostandfound.ui.theme.Poppins
 import com.example.lostandfound.ui.theme.labelTextStyle
 import com.example.lostandfound.ui.theme.pinStyle
@@ -557,11 +559,11 @@ fun OutlinedFilterItem(text: String) {
 
 @Composable
 fun ItemCard(text: String, description: String,url:String,location:String,
-             date:String) {
+             date:String,onClick: () -> Unit) {
     ElevatedCard(
         elevation = CardDefaults.cardElevation(defaultElevation = 6.dp),
         colors = CardDefaults.cardColors(containerColor = Color.White),
-        modifier = Modifier.padding(5.dp)
+        modifier = Modifier.padding(5.dp).clickable { onClick() }
     ) {
         Column(
             Modifier
@@ -635,7 +637,7 @@ fun ItemCard(text: String, description: String,url:String,location:String,
 }
 
 @Composable
-fun AdItem(name:String,location: String,date: String,url:String) {
+fun AdItem(name:String,location: String,date: String,url:String,onClick: () -> Unit) {
     OutlinedCard(
         elevation = CardDefaults.cardElevation(6.dp),
         modifier = Modifier.padding(horizontal = 4.dp, vertical = 8.dp),

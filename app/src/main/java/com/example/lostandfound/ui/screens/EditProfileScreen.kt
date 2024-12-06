@@ -22,7 +22,7 @@ import androidx.compose.material.Text as Text
 @Composable
 fun EditProfileScreen(){
 
-Column(modifier = Modifier.fillMaxSize()) {
+Column(modifier = Modifier.fillMaxSize().padding(22.dp)) {
 
     var name by remember {
         mutableStateOf("")

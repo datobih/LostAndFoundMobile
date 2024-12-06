@@ -1,5 +1,6 @@
 package com.example.lostandfound.utils
 
+import com.example.lostandfound.retrofit.ItemResponseDTO
 import java.io.File
 import java.util.regex.Pattern
 
@@ -13,12 +14,16 @@ object Constants {
     val AUTH_TOKEN = "AUTH_TOKEN"
 
 
+    var currentItem:ItemResponseDTO? =null
+
 
     val LOCATIONS = listOf("Braaksma Hall",
         "Alumni Hall","Arnold Guebert Library",
-        "Founders Hall","Eberhardt Hall","Wangerin House",
-        "Schwermann Hall","Allan Wachowich Centre",
-        "Guild Hall","Tegler",""
+        "Founders Hall","Robert Tegler Student Centre","Schwermann Hall",
+        "Eberhardt Hall","Wangerin House",
+        "Schwermann Hall","Guild Hall","Allan Wachowich Centre","Hole Academic Centre",
+        "Ralph King Athletic Centre"
+
         )
 
     val CATEGORIES = listOf("Wallets","Electronics","Jewelrys","Bags","Other Accessories")

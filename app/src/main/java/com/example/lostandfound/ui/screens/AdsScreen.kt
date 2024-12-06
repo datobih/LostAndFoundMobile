@@ -25,6 +25,8 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import com.example.lostandfound.retrofit.ItemResponseDTO
 import com.example.lostandfound.ui.AdItem
+import com.example.lostandfound.ui.AppButton
+import com.example.lostandfound.ui.theme.text16SB
 import com.example.lostandfound.ui.theme.text18SB
 import com.example.lostandfound.utils.UIState
 import com.example.lostandfound.viewmodel.MainViewModel
@@ -40,7 +42,9 @@ Box(Modifier.fillMaxSize()){
 
     val coroutineScope = rememberCoroutineScope()
 
-
+    LaunchedEffect(true) {
+        mainViewModel.getMyAdsItems()
+    }
     val getAdsItems by mainViewModel.getAdsItemsLiveData.observeAsState()
 
     Column(
@@ -54,19 +58,30 @@ Box(Modifier.fillMaxSize()){
 
         when(getAdsItems){
             is UIState.ErrorState -> {
-                LaunchedEffect(true) {
-                    coroutineScope.launch{
-                        val errorMessage = (getAdsItems as UIState.ErrorState<ArrayList<String>>).data[0]
-                        mainViewModel.resetGetAdsState()
-                        Toast.makeText(context,errorMessage, Toast.LENGTH_LONG).show()
 
+
+                Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center){
+                    Column(horizontalAlignment = Alignment.CenterHorizontally) {
+                        Text(text = "Something went wrong.",style = text16SB)
+                        AppButton(text = "Retry", modifier = Modifier.padding(top = 15.dp)) {
+                            mainViewModel.getMyAdsItems()
+                        }
                     }
+
                 }
+
+
+//                LaunchedEffect(true) {
+//                    coroutineScope.launch{
+//                        val errorMessage = (getAdsItems as UIState.ErrorState<ArrayList<String>>).data[0]
+//
+//                        Toast.makeText(context,errorMessage, Toast.LENGTH_LONG).show()
+//
+//                    }
+//                }
             }
             is UIState.InitialState -> {
-                LaunchedEffect(true) {
-                    mainViewModel.getMyAdsItems()
-                }
+
             }
             is UIState.LoadingState -> {
                 Box(modifier = Modifier.fillMaxSize()){
@@ -80,7 +95,7 @@ Box(Modifier.fillMaxSize()){
                     items(data.size){
                         val content  = data[it]!!
                         AdItem(content.name,content.location,
-                            content.dateUpdated.slice(0..9),content.image)
+                            content.dateCreated.slice(0..9),content.image,{})
                     }
                 }
             }

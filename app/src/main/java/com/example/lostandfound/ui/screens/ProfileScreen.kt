@@ -61,7 +61,7 @@ import com.google.accompanist.permissions.shouldShowRationale
 
 @OptIn(ExperimentalPermissionsApi::class)
 @Composable
-fun ProfileScreen(toEditProfile: () -> Unit,mainViewModel: MainViewModel){
+fun ProfileScreen(toEditProfile: () -> Unit,mainViewModel: MainViewModel,onLogout:() -> Unit){
 
 val context = LocalContext.current
 
@@ -151,33 +151,33 @@ val context = LocalContext.current
                         .clip(CircleShape)
                         .size(120.dp)
                         .clickable {
-                            if (cameraPermissionState.status.isGranted) {
-                                cameraLauncher.launch(uri)
-                            } else {
-                                if (cameraPermissionState.status.shouldShowRationale) {
-                                    Toast
-                                        .makeText(
-                                            context,
-                                            "The Camera app is important",
-                                            Toast.LENGTH_SHORT
-                                        )
-                                        .show()
-
-                                    val intent = Intent(
-                                        Settings.ACTION_APPLICATION_DETAILS_SETTINGS,
-                                        Uri.fromParts("package", context.packageName, null)
-                                    )
-
-                                    intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
-                                    context.startActivity(intent)
-
-                                } else {
-                                    cameraPermissionLauncher.launch(android.Manifest.permission.CAMERA)
-                                }
-
-
-                            }
-
+//                            if (cameraPermissionState.status.isGranted) {
+//                                cameraLauncher.launch(uri)
+//                            } else {
+//                                if (cameraPermissionState.status.shouldShowRationale) {
+//                                    Toast
+//                                        .makeText(
+//                                            context,
+//                                            "The Camera app is important",
+//                                            Toast.LENGTH_SHORT
+//                                        )
+//                                        .show()
+//
+//                                    val intent = Intent(
+//                                        Settings.ACTION_APPLICATION_DETAILS_SETTINGS,
+//                                        Uri.fromParts("package", context.packageName, null)
+//                                    )
+//
+//                                    intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+//                                    context.startActivity(intent)
+//
+//                                } else {
+//                                    cameraPermissionLauncher.launch(android.Manifest.permission.CAMERA)
+//                                }
+//
+//
+//                            }
+//
 
                         },
                     loading = {
@@ -192,7 +192,7 @@ val context = LocalContext.current
                     model = ImageRequest.Builder(LocalContext.current)
                         .data(if(imageUri != Uri.EMPTY) imageUri
                             else if(data.profileImage!=null) Constants.BASE_URL+data.profileImage
-                         else R.drawable.ic_profile).crossfade(true).build(),
+                         else R.drawable.ic_profile_circle).crossfade(true).build(),
                     contentDescription = "Image",
                     contentScale = ContentScale.Crop
                 )
@@ -213,35 +213,41 @@ val context = LocalContext.current
                 }
 
 
-                Row(modifier = Modifier
-                    .align(Alignment.Start)
-                    .fillMaxWidth()
-                    .clickable {
-                        toEditProfile()
-                    }
-                    .padding(top = 5.dp, bottom = 5.dp, start = 30.dp), verticalAlignment = Alignment.CenterVertically){
-                    Icon(painter = painterResource(R.drawable.ic_edit_info), contentDescription = "Edit", modifier = Modifier.size(30.dp))
-                    Text("Edit Profile Information", style = text16M, modifier = Modifier.padding(start = 35.dp))
-                }
+//                Row(modifier = Modifier
+//                    .align(Alignment.Start)
+//                    .fillMaxWidth()
+//                    .clickable {
+//                        toEditProfile()
+//                    }
+//                    .padding(top = 5.dp, bottom = 5.dp, start = 30.dp), verticalAlignment = Alignment.CenterVertically){
+//                    Icon(painter = painterResource(R.drawable.ic_edit_info), contentDescription = "Edit", modifier = Modifier.size(30.dp))
+//                    Text("Edit Profile Information", style = text16M, modifier = Modifier.padding(start = 35.dp))
+//                }
 
-                Divider(modifier = Modifier
-                    .fillMaxWidth(.9f)
-                    .padding(top = 10.dp))
+//                Divider(modifier = Modifier
+//                    .fillMaxWidth(.9f)
+//                    .padding(top = 10.dp))
 
 
 
-                Row(modifier = Modifier
-                    .align(Alignment.Start)
-                    .padding(top = 20.dp, start = 30.dp), verticalAlignment = Alignment.CenterVertically){
-                    Icon(painter = painterResource(R.drawable.ic_contact), contentDescription = "Contact Us", modifier = Modifier.size(30.dp))
-                    Text("Contact Us", style = text16M, modifier = Modifier.padding(start = 35.dp))
-                }
-
+//                Row(modifier = Modifier
+//                    .align(Alignment.Start)
+//                    .padding(top = 20.dp, start = 30.dp), verticalAlignment = Alignment.CenterVertically){
+//                    Icon(painter = painterResource(R.drawable.ic_contact), contentDescription = "Contact Us", modifier = Modifier.size(30.dp))
+//                    Text("Contact Us", style = text16M, modifier = Modifier.padding(start = 35.dp))
+//                }
+//
 
 
                 AppButtonBlack(text = "Logout", modifier = Modifier
                     .fillMaxWidth(.85f)
-                    .padding(top = 60.dp)) { }
+                    .padding(top = 60.dp)) {
+
+                    mainViewModel.logout()
+                    onLogout()
+
+
+                }
 
 
 

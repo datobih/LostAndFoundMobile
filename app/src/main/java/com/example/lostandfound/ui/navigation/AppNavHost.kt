@@ -9,6 +9,7 @@ import com.example.lostandfound.ui.screens.CreateAccountScreen
 import com.example.lostandfound.ui.screens.ForgotPasswordScreen
 import com.example.lostandfound.ui.screens.ForgotPasswordVerificationScreen
 import com.example.lostandfound.ui.screens.Homescreen
+import com.example.lostandfound.ui.screens.ItemDetailScreen
 import com.example.lostandfound.ui.screens.LoginScreen
 import com.example.lostandfound.ui.screens.OnboardingScreen
 import com.example.lostandfound.viewmodel.MainViewModel
@@ -30,6 +31,9 @@ object ForgotPasswordScreenRef
 object ForgotPasswordVerificationScreenRef
 
 
+@Serializable
+object ItemDetailScreenRef
+
 @Composable
 fun AppNavHost(mainNavController: NavHostController,mainViewModel: MainViewModel) {
 
@@ -41,6 +45,7 @@ fun AppNavHost(mainNavController: NavHostController,mainViewModel: MainViewModel
         composable<LoginScreenRef> { LoginScreen(mainViewModel,mainNavController) }
         composable<ForgotPasswordScreenRef> { ForgotPasswordScreen() }
         composable<ForgotPasswordVerificationScreenRef> { ForgotPasswordVerificationScreen() }
+        composable<ItemDetailScreenRef>{ ItemDetailScreen({mainNavController.popBackStack()}) }
 
     }
 

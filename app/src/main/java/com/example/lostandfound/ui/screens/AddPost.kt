@@ -219,21 +219,21 @@ fun AddPost(mainViewModel: MainViewModel,onBack:()->Unit){
                 Text("Contact",style = text14Medium, modifier = Modifier.padding(top = 22.dp, start = 22.dp))
 
 
-                OutlinedTextField(
-                    modifier = Modifier
-                        .fillMaxWidth(.9f).align(Alignment.CenterHorizontally), label = {
-                        Text(text = "Phone Number", style = labelTextStyle)
-                    },
-                    onValueChange = {
-                        if(phoneNumber.length<=12)
-                        phoneNumber = it
-                    }, value =phoneNumber, colors = OutlinedTextFieldDefaults.colors(
-                        focusedBorderColor = Color.Black,
-                        unfocusedBorderColor = Color(0x14000000),
-                        focusedTextColor = Color.Black,
-                        unfocusedTextColor = Color.Black
-                    )
-                )
+//                OutlinedTextField(
+//                    modifier = Modifier
+//                        .fillMaxWidth(.9f).align(Alignment.CenterHorizontally), label = {
+//                        Text(text = "Phone Number", style = labelTextStyle)
+//                    },
+//                    onValueChange = {
+//                        if(phoneNumber.length<=12)
+//                        phoneNumber = it
+//                    }, value =phoneNumber, colors = OutlinedTextFieldDefaults.colors(
+//                        focusedBorderColor = Color.Black,
+//                        unfocusedBorderColor = Color(0x14000000),
+//                        focusedTextColor = Color.Black,
+//                        unfocusedTextColor = Color.Black
+//                    )
+//                )
 
 
 
@@ -279,7 +279,7 @@ fun AddPost(mainViewModel: MainViewModel,onBack:()->Unit){
 
 
                 AnimatedVisibility((category.isNotEmpty() && location.isNotEmpty()
-                        && phoneNumber.isNotEmpty() && imageUri != Uri.EMPTY
+                      && imageUri != Uri.EMPTY
                         && name.isNotEmpty() && description.isNotEmpty()),
                     modifier = Modifier.align(Alignment.CenterHorizontally) ) {
 
